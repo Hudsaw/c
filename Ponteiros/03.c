@@ -1,25 +1,13 @@
 #include <stdio.h>
-#include <stdlib.h>
-
-void findMinMax(int a, int b, int *pMin, int *pMax){
-    if(a>b){
-        *pMin=b;
-        *pMax=a;
-    }
-    else{
-        *pMin=a;
-        *pMax=b;
-    }
-
-}
 
 void main(){
-
-    int a=5, b=7;
-    int max, min;
-
-    findMinMax(a,b, &min, &max);
-    printf("Minimo entre %d eh %d: %d\n", a, b, min);
-    printf("Maximo entre %d eh %d: %d\n", a, b, max);
+    int *p;
+    int grades[3]={80,90,100};
+    printf("Grades comeca em: %p\n", grades);
+    printf("Grades comeca em: %p\n", grades+1);
+    printf("Grades: %d\n", *grades);
+    printf("Address: %p\n", &grades[0]);
+    printf("Address: %p\n", &grades[1]);
+    printf("Address: %p\n", &grades[2]);
 
 }

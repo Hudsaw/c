@@ -1,27 +1,22 @@
 #include <stdio.h>
 
 void main(){
+
+    int *p1;
     int grade = 80;
-    printf("tamanho da variavel = %d\n", sizeof(grade));
-    
-    double grades = 79.9;
-    printf("tamanho da variavel = %d\n", sizeof(grades));
-    
-    int grade1 = 80, grade2 = 90;
-    printf("tamanho da variavel = %d\n", sizeof(grade1+grade2));
-    printf("tamanho da variavel = %d\n", sizeof(grade1)+sizeof(grade2));
+    p1 = &grade;
+    printf("Tamanho do ponteiro: %d\n", sizeof(p1));
 
-    printf("tamanho do tipo double = %d\n", sizeof(double));
-    printf("tamanho do tipo char = %d\n", sizeof(char));
-    printf("tamanho do tipo int = %d\n", sizeof(int));
-    printf("tamanho do tipo float = %d\n", sizeof(float));
-    printf("tamanho do 'a' = %d\n", sizeof('a'));
-    printf("tamanho do a = %d\n", sizeof("a"));
+    double *p2;
+    double grade1 = 80;
+    p2 = &grade1;
+    printf("Tamanho do ponteiro: %d\n", sizeof(p2));
+    printf("Tamanho do dado: %d\n", sizeof(*p2));
 
-    int arr[3];
-    printf("tamanho do array = %d\n", sizeof(arr));
-
-    double brr[5];
-    printf("tamanho do array = %d\n", sizeof(brr));
-
+    int arr[6];
+    int *p3 = arr;
+    printf("Tamanho do array: %d\n", sizeof(arr));
+    printf("Tamanho do ponteiro: %d\n", sizeof(p3));
+    printf("Endereco do array: %p\n", arr);
+    printf("Endereco do ponteiro: %p\n", p3);
 }
