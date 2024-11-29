@@ -31,27 +31,39 @@ void funcao3(int* arr, int size, int *sum, double *avg){
 void funcao4(int* arr, int size, int *max, int *min){
     if(size <= 0){return;}
     *max = arr[0];
-    *min = arr[0]; 
+    *min = arr[0];
+    int min2 = arr[0];
     
     for (int i=1; i<size; i++){
         if(*max < arr[i]){
             *max = arr[i];    
         }
         if(*min > arr[i]){
+            min2 = *min;
             *min = arr[i];    
         }
     }
     printf("O numero maximo no array %d\n", *max);
     printf("O numero minimo no array %d\n", *min);
+    printf("O segundo minimo no array %d\n", min2);
 }
 
 void funcao5(int *arr, int size, int busca){
+    int cont=1;
     for (int i=0; i<size; i++){
         if(busca==arr[i]){
-            printf("Esta no array");
+            cont=0;
+            printf("O valor %d esta no n%d do array\n", busca, i+1);
+        };
+        for(int j=i+1;j<size;j++){
+            if(arr[i]+arr[j]==busca){
+                printf("O valor %d eh a soma do #%d: %d e #%d: %d do array\n", busca, i+1, arr[i], j+1, arr[j]);
+            }
         }
     }
-    printf("Nao esta no array");
+    if(cont){
+            printf("O valor %d nao esta no array\n", busca);
+    };  
 }
 
 void funcao6(int *arr, int size, int ind, int num){
@@ -94,14 +106,28 @@ void funcao8(int *arr, int size){
 }
 
 void funcao9(int *arr, int size){
-    int temp[SIZE];
+    int temp, cont;
     for (int i=0; i<size; i++){
-        temp[i]=arr[size-i-1];
+        temp = 0;
+        cont = 1;  
+        // Verifica se o valor já foi contado
+        for (int j=0; j<i; j++){
+            if(arr[j]==arr[i]){
+                temp = 1; // O valor já foi contado
+                break;
+            }
+        }
+        if(temp){
+            continue; // Pula o valor já contado
+        }
+        // Conta a frequência do valor
+        for (int j=i+1; j<size; j++){
+            if(arr[j]==arr[i]){
+                cont++;
+            }
+        }
+        printf("Valor %d aparece %d vezes\n", arr[i], cont);
     }
-    for (int i=0; i<size; i++){
-        arr[i]=temp[i];
-    }
-    
 }
 
 void menu() {
@@ -118,7 +144,8 @@ void menu() {
         printf("6. Atualizar numero no array\n");
         printf("7. Checar se os vizinhos sao iguais\n");
         printf("8. Checar ordem crescente\n");
-        printf("9. Inverter array\n");
+        printf("9. Quantas vezes aparece no array\n");
+        printf("10. Buscar o segundo menor numero no array\n");
         printf("0. Sair\n");
         printf("Digite sua escolha: ");
         scanf("%d", &escolha);
@@ -168,7 +195,6 @@ void menu() {
             }
             case 9:{
                 funcao9(grades, SIZE);
-                funcao2(grades,SIZE);
                 break;
             }
             case 0:
