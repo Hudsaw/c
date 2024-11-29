@@ -17,15 +17,15 @@ void funcao2(int* arr, int size){
     }
 }
 
-void funcao3(int* arr, int size, int *sum, double *ave){
+void funcao3(int* arr, int size, int *sum, double *avg){
     
     for (int i=0; i<size; i++){
         *sum = *sum + arr[i]; 
     }
-    *ave = (double) *sum/size;
+    *avg = (double) *sum/size;
     
     printf("Soma do array: %d\n", *sum);
-    printf("Media do array: %.2f\n", *ave);
+    printf("Media do array: %.2f\n", *avg);
 }
 
 void funcao4(int* arr, int size, int *max, int *min){
@@ -63,6 +63,47 @@ void funcao6(int *arr, int size, int ind, int num){
     }
 }
 
+int funcao7(int *arr, int size){
+    int cont=0;
+    for (int i=1; i<size; i++){
+        if(arr[i-1]!=arr[i+1]){
+            cont++;
+        }    
+    }
+    if(cont){
+        return 0;
+    }
+    return 1;
+}
+
+void funcao8(int *arr, int size){
+    int cont=0;
+    for (int i=0; i<size; i++){
+        if(arr[i]<arr[i+1]){
+            cont++;
+        } else if(arr[i] > arr[i+1]){
+            printf("Array nao ordenado.\n");
+            return;
+        }      
+    }
+    if(cont==size){
+        printf("Array superordenado.\n");
+    } else{
+        printf("Array ordenado.\n");
+    }
+}
+
+void funcao9(int *arr, int size){
+    int temp[SIZE];
+    for (int i=0; i<size; i++){
+        temp[i]=arr[size-i-1];
+    }
+    for (int i=0; i<size; i++){
+        arr[i]=temp[i];
+    }
+    
+}
+
 void menu() {
     int escolha;
     int grades [SIZE]; 
@@ -75,6 +116,9 @@ void menu() {
         printf("4. Maior e menor numero de um array\n");
         printf("5. Buscar um numero no array\n");
         printf("6. Atualizar numero no array\n");
+        printf("7. Checar se os vizinhos sao iguais\n");
+        printf("8. Checar ordem crescente\n");
+        printf("9. Inverter array\n");
         printf("0. Sair\n");
         printf("Digite sua escolha: ");
         scanf("%d", &escolha);
@@ -87,8 +131,8 @@ void menu() {
                 break;
             case 3:{
                 int sum = 0;
-                double  ave = 0;
-                funcao3(grades, SIZE, &sum, &ave);
+                double avg = 0;
+                funcao3(grades, SIZE, &sum, &avg);
                 break;
             }
             case 4:{
@@ -108,6 +152,23 @@ void menu() {
                 printf("Digite a posicao e o numero a alterar (0 0):");
                 scanf("%d %d", &ind, &num);
                 funcao6(grades, SIZE, ind, num);
+                break;
+            }
+            case 7:{
+                if(funcao7(grades, SIZE)){
+                    printf("Array intervalado.\n");
+                } else{
+                    printf("Array nao intervalado.\n");
+                }
+                break;
+            }
+            case 8:{
+                funcao8(grades, SIZE);
+                break;
+            }
+            case 9:{
+                funcao9(grades, SIZE);
+                funcao2(grades,SIZE);
                 break;
             }
             case 0:
