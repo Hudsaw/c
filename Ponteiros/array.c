@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
-#define SIZE 4
+#define SIZE 5
 
 void funcao1(int* arr, int size){
     

@@ -39,10 +39,23 @@ void swapArray(int *arr, int size){
     }
 }
 
-void swapArrayResursivo(int *arr, int size){
+void swapArrayRecursivo(int *arr, int size){
     for (int i=0; i < size/2; i++){
         swap(arr+i, arr+size-i-1);
     }
+}
+
+void swap2Array(int *arr, int *brr, int size){
+    for (int i=0; i < size; i++){
+        swap(&arr[i], &brr[i]);
+    }
+}
+
+void swapO(void** a, void** b){
+    void* temp;
+    temp = *a;
+    *a=*b;
+    *b=temp;
 }
 
 int main(){
@@ -64,6 +77,8 @@ int main(){
     printf("valor depois swap a: %d\n", a);
     printf("valor depois swap b: %d\n", b);
 
+    
+
     swapAdicao(pA,pB);
 
     printf("valor depois swapAdicao a: %d\n", a);
@@ -82,16 +97,26 @@ int main(){
     printf("valor depois swapGenerica a: %d\n", a);
     printf("valor depois swapGenerica b: %d\n", b);
 
-    int arr[2]={a,b};
+    int arr[2]={a,b}, brr[2]={b,a};
     swapArray(arr, 2);
 
     printf("valor depois swapArray a: %d\n", arr[0]);
     printf("valor depois swapArray b: %d\n", arr[1]);
 
-    swapArrayResursivo(arr, 2);
+    swapArrayRecursivo(arr, 2);
 
     printf("valor depois swapArrayRecursivo a: %d\n", arr[0]);
     printf("valor depois swapArrayRecursivo b: %d\n", arr[1]);
+
+    swap2Array(arr, brr, 2);
+
+    printf("valor depois swap2Array arr: %d, %d\n", arr[0], arr[1]);
+    printf("valor depois swap2Array brr: %d, %d\n", brr[0], brr[1]);
+    
+    swapO((void**)pA,(void**)pB);
+
+    printf("valor depois swapO a: %d\n", *pA);
+    printf("valor depois swapO b: %d\n", *pB);
 
 return 0;
 }
