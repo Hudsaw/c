@@ -17,6 +17,7 @@ void funcao2(int* arr, int asize){
         printf("O valor#%d: %d\n", i+1, arr[i]);
     }
 }
+
 void funcao3(int** arr, int* asize){
     int bsize;
     printf("Digite o novo tamanho do array de %d elementos:", *asize);
