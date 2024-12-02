@@ -1,0 +1,54 @@
+void funcao5(int* arr, int size, int busca){
+    int cont;
+    for (int i = 0; i < size; i++ ){
+        if(arr[i]% busca == 0){
+            printf("O numero %d eh multiplo de %d!", arr[i], busca);
+            cont++;
+        }
+    }
+    if(!cont){
+        printf("o numero %d nao tem multiplos no array", busca);
+    } else {
+        printf("O numero %d tem %d multiplos no array.", busca, cont);
+    }
+}
+
+void menu() {
+    int escolha;
+    // Para malloc trocar isto: int grades [SIZE]; 
+    // por isto: int *grades;
+    // grades = (int*) malloc (SIZE * sizeof(int));
+    // Porém com malloc podes decidir o tamanho do array depois. 
+
+    int *grades, asize;
+    printf("Digite o tamanho do array:");
+    scanf("%d", &asize);
+    grades = (int*) malloc (asize * sizeof(int));
+    // grades = (int*) calloc (asize, sizeof(int));
+    // Com o calloc inicializa a variável com o valor 0, cuidado ao usar!
+
+    if(!grades){
+        printf("Memoria nao alocada!");
+    } else{
+        printf("Memoria alocada!");
+    }
+
+    do {
+        printf("\nPrograma escrito para estudar!\n");
+        printf("Escolha uma acao:\n");
+        printf("1. Digite os numeros do array\n");
+        printf("2. Mostre os numeros do array\n");
+        printf("3. Alterar o tamanho do array\n");
+        printf("4. Quantos pares e impares\n");
+        printf("5. Achar multiplos\n");
+        printf("0. Sair\n");
+        printf("Digite sua escolha: ");
+        scanf("%d", &escolha);
+        switch (escolha) {
+case 5:{
+                int busca;
+                printf("\nDigite o numero para buscar multiplos:");
+                scanf("%d", &busca);
+                funcao5(grades, asize, busca);
+                break;
+            }
