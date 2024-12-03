@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
-// #define SIZE 5
+#include <string.h>
+#include <time.h>
 
 void funcao1(int* arr, int asize){
     for (int i=0; i<asize; i++){
@@ -19,8 +20,8 @@ void funcao3(int** arr, int* asize){
     int bsize;
     printf("Digite o novo tamanho do array de %d elementos:", *asize);
     scanf("%d", &bsize);
-    int* brr = (int*) realloc (*arr, bsize * sizeof(int));
-    if (brr == NULL) {
+    int* brr = (int*)realloc(*arr, bsize * sizeof(int));
+    if (!brr) {
         printf("Erro ao realocar a memória!\n");
         return;
     }
@@ -46,7 +47,7 @@ void funcao4(int* arr, int size, int *par, int *impar){
 void funcao5(int* arr, int size, int busca){
     int cont=0;
     for (int i = 0; i < size; i++ ){
-        if(arr[i]% busca == 0){
+        if(arr[i] % busca == 0){
             printf("O numero %d eh multiplo de %d!", arr[i], busca);
             cont++;
         }
@@ -58,25 +59,87 @@ void funcao5(int* arr, int size, int busca){
     }
 }
 
+int* funcao6(int* arr, int* brr, int* bsize){
+    int* crr = NULL;
+    int asize = 0;
+    for (int i = 0; i < 6; i++){
+        for(int j = 0; j < 6; j++){
+            if(arr[i]==brr[j]){
+                asize++;
+                int* temp = (int*)realloc(crr, asize * sizeof(int));
+		        if (!temp) {
+                    free(crr);
+                    return NULL;
+                }
+		        crr = temp;
+                crr[asize-1] = arr[i];
+                break;
+            }
+        }
+    }
+    *bsize=asize;
+    return crr;
+}
+
+int* funcao7(int** arr, int* asize){
+    int num, bsize = 0;
+    int* brr = NULL;
+
+    while (1){
+        printf("Digite o #%d: ", bsize+1);
+        scanf("%d", &num);
+        if(num<0) break;
+        
+        int* crr = (int*)realloc(brr, (bsize+1) * sizeof(int));
+        if (!crr){
+            free(brr);
+            return NULL;
+        } 
+        brr=crr;
+        brr[bsize] = num;
+        bsize++;
+    }
+    *arr = brr;
+    *asize = bsize;
+    return *arr;
+}
+
+double aleatorio(unsigned inicio, unsigned fim){
+    return inicio +((double)rand()/RAND_MAX) * (fim - inicio);
+}
+
+void funcao8(double* arr, int asize){
+
+    for (int i = 0; i < asize; i++ ){
+        arr[i] = aleatorio(1,100);
+        printf("O valor #%d eh: %.1f\n",i+1, arr[i]);
+    }
+}
+
+void* realocar(void*srcblock, unsigned asize, unsigned bsize){
+    void* resArr = malloc(bsize);
+    if(!resArr) printf("Erro ao realocar a memoria!\n");
+    unsigned minSize = (asize < bsize) ? asize : bsize;
+    memcpy(resArr, srcblock, minSize);
+    return resArr;
+}
+
 void menu() {
     int escolha;
-    // Para malloc trocar isto: int grades [SIZE]; 
-    // por isto: int *grades;
-    // grades = (int*) malloc (SIZE * sizeof(int));
-    // Porém com malloc podes decidir o tamanho do array depois. 
 
     int *grades, asize;
-    printf("Digite o tamanho do array:");
+    printf("Digite o tamanho inicial do array:");
     scanf("%d", &asize);
     grades = (int*) malloc (asize * sizeof(int));
-    // grades = (int*) calloc (asize, sizeof(int));
-    // Com o calloc inicializa a variável com o valor 0, cuidado ao usar!
-
-    if(!grades){
-        printf("Memoria nao alocada!");
-    } else{
-        printf("Memoria alocada!");
+   
+    if (!grades) {
+        printf("Memória não alocada!\n");
+        exit(1);
+    } else {
+        printf("Memória alocada com sucesso!\n");
     }
+
+    srand(time(NULL));
 
     do {
         printf("\nPrograma escrito para estudar!\n");
@@ -86,6 +149,9 @@ void menu() {
         printf("3. Alterar o tamanho do array\n");
         printf("4. Quantos pares e impares\n");
         printf("5. Achar multiplos\n");
+        printf("6. Numeros da loteria\n");
+        printf("7. Armazene quantidade aleatoria\n");
+        printf("8. Vetor de double aleatorios\n");
         printf("0. Sair\n");
         printf("Digite sua escolha: ");
         scanf("%d", &escolha);
@@ -111,6 +177,40 @@ void menu() {
                 funcao5(grades, asize, busca);
                 break;
             }
+            case 6:{
+                int meuBilhete[6], resLoteria[6];
+                int* acertos;
+                int tam;
+
+                printf("\nDigite o resultado da loteria:\n");
+                funcao1(resLoteria, 6);
+                printf("\nDigite o seu bilhete:\n");
+                funcao1(meuBilhete, 6);
+                acertos = funcao6(resLoteria, meuBilhete, &tam);
+                printf("\nNumeros sorteados pela loteria\n");
+                funcao2(resLoteria,6);
+                if(tam==0){
+                    printf("\nSem acertos!");
+                } 
+                else{
+                    printf("\nNumeros acertados:\n");
+                    funcao2(acertos, tam);
+                    free(acertos);
+                }
+                break;
+            }
+            case 7:
+                funcao7(&grades, &asize);
+                break;
+            case 8: {
+                double* vetor = (double*)malloc(asize * sizeof(double));
+                    if (!vetor) {
+                        printf("Erro ao alocar memoria!\n");
+                    }
+                funcao8(vetor, asize);
+                free(vetor);
+                break;
+            }
             case 0:
                 printf("Saindo...\n");
                 return;
@@ -120,7 +220,7 @@ void menu() {
         }
     } while (escolha!=0);
     
-    free(grades); //liberar a memoria antes de fechar o programa.
+    free(grades);
 
 }
 int main(void) {

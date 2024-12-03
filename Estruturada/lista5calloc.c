@@ -1,6 +1,5 @@
 #include <stdio.h>
 #include <stdlib.h>
-// #define SIZE 5
 
 void funcao1(int* arr, int asize){
     for (int i=0; i<asize; i++){
@@ -66,19 +65,36 @@ void funcao6(int* arr, int size, int busca){
     }
 }
 
+void funcao7(int* arr, int size){
+    int cont=0;
+    for (int i = 0; i < size; i++ ){
+        if(arr[i] == 0){
+            cont++;
+        }
+    }
+    if(!cont){
+        printf("o array nao contem zeros");
+    } else {
+        printf("O array tem %d zeros.", cont);
+    }
+}
+
+void funcao8(int* arr, int size){
+    for (int i = 0; i < size; i++ )
+        arr[i]=i;
+    for (int i = 0; i < size; i++ ){
+        if(i<10||i>=(size-10))
+        printf("\nO valor #%d: eh %d", i, arr[i]);
+    }
+}
+
 void menu() {
     int escolha;
-    // Para malloc trocar isto: int grades [SIZE]; 
-    // por isto: int *grades;
-    // grades = (int*) malloc (SIZE * sizeof(int));
-    // Porém com malloc podes decidir o tamanho do array depois. 
-
     int *grades, asize;
     printf("Digite o tamanho do array:");
     scanf("%d", &asize);
-    // grades = (int*) malloc (asize * sizeof(int));
+    
     grades = (int*) calloc (asize, sizeof(int));
-    // Com o calloc inicializa a variável com o valor 0, cuidado ao usar!
 
     if(!grades){
         printf("Memoria nao alocada!");
@@ -95,6 +111,8 @@ void menu() {
         printf("4. Alterar o tamanho do array\n");
         printf("5. Quantos pares e impares\n");
         printf("6. Achar multiplos\n");
+        printf("7. Contar os zeros\n");
+        printf("8. Substituir numeros pelo indice\n");
         printf("0. Sair\n");
         printf("Digite sua escolha: ");
         scanf("%d", &escolha);
@@ -106,7 +124,7 @@ void menu() {
                 funcao2(grades, asize);
                 break;
             case 3:
-                funcao3(&grades, &asize);
+                funcao3(grades, asize);
                 break;
             case 4:
                 funcao4(&grades, &asize);
@@ -123,6 +141,12 @@ void menu() {
                 funcao6(grades, asize, busca);
                 break;
             }
+            case 7:
+                funcao7(grades, asize);
+                break;
+            case 8:
+                funcao8(grades, asize);
+                break;
             case 0:
                 printf("Saindo...\n");
                 return;
@@ -132,7 +156,7 @@ void menu() {
         }
     } while (escolha!=0);
     
-    free(grades); //liberar a memoria antes de fechar o programa.
+    free(grades);
 
 }
 int main(void) {

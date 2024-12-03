@@ -1,7 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
-// #define SIZE 5
-
+#include <string.h>
 
 void funcao1(int* arr, int asize){
     
@@ -18,33 +17,30 @@ void funcao2(int* arr, int asize){
     }
 }
 
-void funcao3(int** arr, int* asize){
-    int bsize;
-    printf("Digite o novo tamanho do array de %d elementos:", *asize);
-    scanf("%d", &bsize);
+void funcao3(int** arr, int asize, int bsize){
+
     int* brr = (int*) realloc (*arr, bsize * sizeof(int));
-    if (brr == NULL) {
-        printf("Erro ao realocar a memória!\n");
-        return;
+    if (!brr) {
+        printf("Erro ao realocar a memoria!\n");
     }
     *arr = brr;
-    *asize = bsize;
-    printf("Memoria realocada com sucesso! Novo tamanho: %d elementos.\n", bsize);
+}
+
+void* realocar(void*srcblock, unsigned asize, unsigned bsize){
+    void* resArr = malloc(bsize);
+    if(!resArr) printf("Erro ao realocar a memoria!\n");
+    unsigned minSize = (asize < bsize) ? asize : bsize;
+    memcpy(resArr, srcblock, minSize);
+    return resArr;
 }
 
 void menu() {
     int escolha;
-    // Para malloc trocar isto: int grades [SIZE]; 
-    // por isto: int *grades;
-    // grades = (int*) malloc (SIZE * sizeof(int));
-    // Porém com malloc podes decidir o tamanho do array depois. 
-
     int *grades, asize;
     printf("Digite o tamanho do array:");
     scanf("%d", &asize);
     grades = (int*) malloc (asize * sizeof(int));
     // grades = (int*) calloc (asize, sizeof(int));
-    // Com o calloc inicializa a variável com o valor 0, cuidado ao usar!
 
     if(!grades){
         printf("Memoria nao alocada!");
@@ -57,7 +53,8 @@ void menu() {
         printf("Escolha uma acao:\n");
         printf("1. Digite os numeros do array\n");
         printf("2. Mostre os numeros do array\n");
-        printf("3. Alterar o tamanho do array\n");
+        printf("3. Alterar o tamanho do array para inteiros\n");
+        printf("4. Alterar o tamanho do array generico\n");
         printf("0. Sair\n");
         printf("Digite sua escolha: ");
         scanf("%d", &escolha);
@@ -68,9 +65,28 @@ void menu() {
             case 2:
                 funcao2(grades, asize);
                 break;
-            case 3:
-                funcao3(&grades, &asize);
+            case 3:{
+                int bsize;
+                printf("Digite o novo tamanho do array de %d elementos:", asize);
+                scanf("%d", &bsize);
+                funcao3(&grades, asize, bsize);
+                asize = bsize;
                 break;
+            }
+            case 4:{
+                int bsize;
+                printf("Digite o novo tamanho do array de %d elementos:", asize);
+                scanf("%d", &bsize);
+
+                int *arr = (int*) realocar(grades, asize * sizeof(int), bsize * sizeof(int));
+                if(!arr){
+                    printf("Memoria nao alocada!");
+                } else{
+                    asize = bsize;
+                    grades = arr;
+                }
+                break;
+            }
             case 0:
                 printf("Saindo...\n");
                 return;
