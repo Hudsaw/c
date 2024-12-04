@@ -40,11 +40,11 @@ char** matrizChar(int *size){
     return matriz;
 }
 
-Cidade* criarCidade(int* bsize){
+Cidade* criarCidade(int* asize){
     printf("Digite o numero de cidades a serem cadastradas:");
-    scanf("%d", &bsize[0]);
+    scanf("%d", &asize);
     
-    Cidade* cidades = (Cidade*) malloc (bsize[2] * sizeof(Cidade));
+    Cidade* cidades = (Cidade*) malloc (asize * sizeof(Cidade));
     if(!cidades){
         printf("Memoria nao alocada!\n");
         exit(1);
@@ -228,7 +228,7 @@ void menu() {
             if (cidades != NULL) {
                 cidades = 0;
             }
-            criarCidade(&cidades, &asize);
+            cidades = criarCidade(&asize);
             break;
         case 7:
             if (cidades == NULL) {
