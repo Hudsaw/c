@@ -124,6 +124,47 @@ void* realocar(void*srcblock, unsigned asize, unsigned bsize){
     return resArr;
 }
 
+int* funcao9(int** arr, int* asize){
+    int num, bsize = *asize;
+    int* brr = *arr;
+
+    while (1){
+        printf("Digite o #%d: ", bsize+1);
+        scanf("%d", &num);
+        if(num<=0) break;
+        
+        if (bsize >= *asize) {
+            *asize += 10;
+            int* crr = malloc((*asize) * sizeof(int));
+            if (!crr){
+                free(brr);
+                return NULL;
+            } 
+            // Por não usar o realloc
+            for (int i = 0; i < bsize; i++) {
+                crr[i] = brr[i];
+            }
+            free(brr);
+            //
+            brr=crr;
+        }
+        brr[bsize] = num;
+        bsize++;
+    }
+    *arr = brr;
+    *asize = bsize;
+    return *arr;
+}
+
+void funcao10(int* arr, int size){
+    for (int i = 0; i < size; i++ )
+        arr[i]=i;
+    for (int i = 0; i < size; i++ ){
+        if(i<10||i>=(size-10))
+        printf("\nO valor #%d: eh %d", i, arr[i]);
+    }
+}
+
 void menu() {
     int escolha;
 
@@ -152,6 +193,8 @@ void menu() {
         printf("6. Numeros da loteria\n");
         printf("7. Armazene quantidade aleatoria\n");
         printf("8. Vetor de double aleatorios\n");
+        printf("9. Armazenamento progressivo 10 em 10\n");
+        printf("10. Substituir numeros pelo indice\n");
         printf("0. Sair\n");
         printf("Digite sua escolha: ");
         scanf("%d", &escolha);
@@ -211,6 +254,12 @@ void menu() {
                 free(vetor);
                 break;
             }
+            case 9:
+                funcao9(&grades, &asize);
+                break;
+            case 10:
+                funcao10(&grades, &asize);
+                break;
             case 0:
                 printf("Saindo...\n");
                 return;
