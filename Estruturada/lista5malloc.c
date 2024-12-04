@@ -116,14 +116,6 @@ void funcao8(double* arr, int asize){
     }
 }
 
-void* realocar(void*srcblock, unsigned asize, unsigned bsize){
-    void* resArr = malloc(bsize);
-    if(!resArr) printf("Erro ao realocar a memoria!\n");
-    unsigned minSize = (asize < bsize) ? asize : bsize;
-    memcpy(resArr, srcblock, minSize);
-    return resArr;
-}
-
 int* funcao9(int** arr, int* asize){
     int num, bsize = *asize;
     int* brr = *arr;
