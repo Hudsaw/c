@@ -7,6 +7,7 @@ typedef struct {
     char nome [50];
     int eixoX;
     int eixoY;
+    int nv;
 } Cidade;
 
 void projetar(int *size){
@@ -51,6 +52,8 @@ void incluirCidade(Cidade* cidades, int asize){
         scanf("%d", &cidades[i].eixoX);
         printf("Coordenada Y: ");
         scanf("%d", &cidades[i].eixoY);
+        printf("Nivel: ");
+        scanf("%d", &cidades[i].nv);
     }
 }   
 
@@ -79,26 +82,24 @@ void calcularDistancias(Cidade* cidades, int asize, int** distancias) {
     printf("Matriz de distancias calculada com sucesso.\n");
 }
 
+float calcularCusto(Cidade* cidades, int** distancias, int a, int b, float diesel){
+    float nvmedia = (cidades[a].nv + cidades[b].nv) / 2.0;
+    return (distancias[a][b] / diesel) / nvmedia;
+}
+   
+
 void printarDistancias(int** distancias, int* size) {
-    printf("Matriz de distancias:\n");
+    printf("   ");
     for (int i = 0; i < size[0]; i++) {
+        printf("%5d", i);
+    } 
+    printf("\n");
+    for (int i = 0; i < size[0]; i++) {
+        printf("%2d ", i);  
         for (int j = 0; j < size[1]; j++) {
-            if(j==0) printf(" %d ", i); 
-            printf(" %d ", distancias[i][j]);
+            printf("%5d", distancias[i][j]);
         }
         printf("\n");
-    }
-}
-
-void buscarDistancias(int** distancias, int* size) {
-    int cidade1, cidade2;
-    printf("Digite o indice das duas cidades para buscar a distancia (0 a %d):\n", size[0] - 1);
-    scanf("%d %d", &cidade1, &cidade2);
-
-    if (cidade1 >= 0 && cidade1 < size[0] && cidade2 >= 0 && cidade2 < size[1]) {
-        printf("Distancia entre cidade %d e cidade %d: %d\n", cidade1, cidade2, distancias[cidade1][cidade2]);
-    } else {
-        printf("Indices invalidos!\n");
     }
 }
 
@@ -122,6 +123,7 @@ void menu() {
         printf("2. Incluir dados das cidades\n");
         printf("3. Imprimir matriz de distancia entre cidades\n");
         printf("4. Buscar distancia entre 2 cidades.\n");
+        printf("5. Custo de  transporte entre 2 cidades.\n");
         printf("0. Sair...\n");
         printf("Digite sua escolha:");
         scanf("%d", &escolha);
@@ -139,12 +141,6 @@ void menu() {
                 printf("Crie o vetor primeiro!\n");
             } else {
                 incluirCidade(cidades, asize);
-            }
-            break;
-        case 3:
-            if (cidades == NULL) {
-                printf("Crie o vetor de cidades primeiro!\n");
-            } else {
                 if (distancias != NULL) {
                     liberarMatriz(distancias, asize);
                 }
@@ -152,6 +148,12 @@ void menu() {
                 size[1] = asize;
                 distancias = matrizInt(size);
                 calcularDistancias(cidades, asize, distancias);
+            }
+            break;
+        case 3:
+            if (cidades == NULL || distancias == NULL) {
+                printf("Crie as cidades e calcule a matriz de distancias primeiro!\n");
+            } else {
                 printarDistancias(distancias, size);
             }
             break;
@@ -159,14 +161,39 @@ void menu() {
             if (cidades == NULL || distancias == NULL) {
                 printf("Crie as cidades e calcule a matriz de distancias primeiro!\n");
             } else {
-                buscarDistancias(distancias, size);
+                int a, b;
+                printf("Digite o codigo das duas cidades (0 a %d):\n", size[0] - 1);
+                scanf("%d %d", &a, &b);
+                printf("A distancia entre as cidades de %s e %s eh de %d km.\n", cidades[a].nome, cidades[b].nome, distancias[a][b]); 
+            }
+            break;
+        case 5:
+            if (cidades == NULL || distancias == NULL) {
+                printf("Crie as cidades e calcule a matriz de distancias primeiro!\n");
+            } else {
+                int a, b;
+                float diesel, res;
+                printf("Digite o preco do diesel:");
+                scanf("%f", &diesel);
+                if (diesel <= 0) {
+                    printf("Preco do diesel deve ser positivo.\n");
+                    return;
+                }
+                printf("Digite o codigo das duas cidades (0 a %d):\n", size[0] - 1);
+                scanf("%d %d", &a, &b);
+                res=calcularCusto(cidades, distancias, a, b, diesel);
+                printf("Com o diesel a R$ %.2f, o custo entre as cidades de %s e %s eh de R$ %.2f.\n", diesel, cidades[a].nome, cidades[b].nome, res); 
             }
             break;
         case 0:
             printf("Saindo...\n");
-            if (cidades != NULL) free(cidades);
-            if (distancias != NULL) liberarMatriz(distancias, size[0]);
-            return;
+            if (cidades != NULL) {
+                free(cidades);
+            }
+            if (distancias != NULL) {
+                liberarMatriz(distancias, size[0]);
+            }
+            break;
         default:
             printf("Escolha invalida. Digite novamente!\n");
             break;
