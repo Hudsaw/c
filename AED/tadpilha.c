@@ -47,8 +47,6 @@ void pilha3_invertida(Pilha* p)
     printf("Sequencia na ordem inversa: ");
     while (p->topo) printf("%d ", pop(p));
     printf("\n");
-
-    destruirPilha(p);
 }
 
 void pilha4_estacionamento()
@@ -77,14 +75,14 @@ void pilha4_estacionamento()
         printf("%d ", pop(p));
     }
     printf("\n");
-
+    
     destruirPilha(p);
 }
 
 int pilha5_igualdade(Pilha* p1, Pilha* p2) {
     Elemento* a = p1->topo;
     Elemento* b = p2->topo;
-    while (a == NULL && b == NULL) {
+    while (a != NULL && b != NULL) {
         if (a->dado != b->dado) {
             return 0;
         }
@@ -122,6 +120,9 @@ void pilha7_inverter_pilha(Pilha* p) {
     while (b->topo) {
         push (p, pop(b));
     }
+
+    printf("Pilha invertida!\n");
+
     destruirPilha(a);
     destruirPilha(b);
 }
@@ -143,7 +144,6 @@ char str[101];
         else if (c == ')' || c == ']' || c == '}') {
             if (!p->topo) {
                 printf("Sequencia nao balanceada\n");
-                destruirPilha(p);
                 return; 
             }
             int topo = pop(p);
@@ -151,7 +151,6 @@ char str[101];
                   (topo == '[' && c == ']') ||
                   (topo == '{' && c == '}'))) {
                 printf("Sequencia nao balanceada\n");
-                destruirPilha(p);
                 return;
             }
         }
@@ -162,6 +161,6 @@ char str[101];
     } else {
         printf("Sequencia nao balanceada\n");
     }
-
+    
     destruirPilha(p);
 }

@@ -14,21 +14,19 @@ void pausar() {
 
 int main() {
     int opcao;
+    char op;
     
-    // Pilhas originais
-    Pilha* r_original = criarPilha();
-    Pilha* s_original = criarPilha();
-    Pilha* t_original = criarPilha();
+    Pilha* r = criarPilha();
+    Pilha* s = criarPilha();
+    Pilha* t = criarPilha();
     
-    // Valores iniciais
     int valores_r[] = {10, 15, 20, 25, 30};
     int valores_s[] = {'+', '-', '*', '/'};
     int valores_t[] = {10, 15, 20, 25, 30};
     
-    // Inicializar pilhas originais
-    for (int i = 0; i < 5; i++) push(r_original, valores_r[i]);
-    for (int i = 0; i < 4; i++) push(s_original, valores_s[i]);
-    for (int i = 0; i < 5; i++) push(t_original, valores_t[i]);
+    for (int i = 0; i < 5; i++) push(r, valores_r[i]);
+    for (int i = 0; i < 4; i++) push(s, valores_s[i]);
+    for (int i = 0; i < 5; i++) push(t, valores_t[i]);
 
     do {
         system("cls || clear");
@@ -40,7 +38,7 @@ int main() {
         printf("0. Sair\n");
         printf("Escolha uma opcao: ");
         scanf("%d", &opcao);
-        getchar(); // Limpar buffer
+        getchar(); 
 
         switch (opcao) {
             case 4: {
@@ -61,31 +59,45 @@ int main() {
                     scanf("%d", &sub_opcao);
                     getchar();
 
-                    // CRIAR CÓPIAS PARA CADA EXERCÍCIO
-                    Pilha* r_copia = copiarPilha(r_original);
-                    Pilha* s_copia = copiarPilha(s_original);
-                    Pilha* t_copia = copiarPilha(t_original);
-
                     switch (sub_opcao) {
                         case 1: pilha1_binario(); break;
-                        case 2: printf("Resultado: %d\n", pilha2_pareada(r_copia, s_copia)); break;
-                        case 3: pilha3_invertida(r_copia); break;
+                        case 2: 
+                            printf("Resultado: %d\n", pilha2_pareada(r, s)); 
+                            reinicializarPilha(r, valores_r, 5);
+                            reinicializarPilha(s, valores_s, 4);
+                            break;
+                        case 3: 
+                            pilha3_invertida(r);
+                            reinicializarPilha(r, valores_r, 5);
+                            break;
                         case 4: pilha4_estacionamento(); break;
                         case 5: 
-                            if (pilha5_igualdade(r_copia, t_copia)) 
+                            if (pilha5_igualdade(r, t)) 
                                 printf("Pilhas iguais\n");
                             else 
                                 printf("Pilhas diferentes\n");
+                            reinicializarPilha(r, valores_r, 5);
+                            reinicializarPilha(t, valores_t, 4);
                             break;
-                        case 6: pilha6_comparar_tamanho(r_copia, s_copia); break;
-                        case 7: pilha7_inverter_pilha(s_copia); break;
+                        case 6: 
+                            pilha6_comparar_tamanho(r, s);
+                            reinicializarPilha(r, valores_r, 5);
+                            reinicializarPilha(s, valores_s, 4);
+                            break;
+                        case 7: 
+                            printf("Qual pilha gostaria de inverter (r, s ou t)?");
+                            scanf("%c", &op);
+                            getchar();
+                            switch(op) {
+                                case 'r': pilha7_inverter_pilha(r); break;
+                                case 's': pilha7_inverter_pilha(s); break;
+                                case 't': pilha7_inverter_pilha(t); break;
+                                default: printf("Opcao invalida!\n");
+                            } break;
                         case 8: pilha8_balanceamento(); break;
                         case 0: break;
                         default: printf("Opcao invalida!\n");
                     }
-                    if (r_copia) destruirPilha(r_copia);
-                    if (s_copia) destruirPilha(s_copia);
-                    if (t_copia) destruirPilha(t_copia);
                     if (sub_opcao != 0) pausar();
                 } while (sub_opcao != 0);
                 break;
@@ -203,9 +215,9 @@ int main() {
     } while (opcao != 0);
 
     // Liberar memória das pilhas
-    destruirPilha(r_original);
-    destruirPilha(s_original);
-    destruirPilha(t_original);
+    destruirPilha(r);
+    destruirPilha(s);
+    destruirPilha(t);
 
     return 0;
 }

@@ -41,23 +41,6 @@ int tamanho(Pilha* p) {
     return cont;
 }
 
-Pilha* copiarPilha(Pilha* original) {
-    Pilha* copia = criarPilha();
-    Pilha* temp = criarPilha();
-    
-    Elemento* atual = original->topo;
-    while (atual) {
-        push(temp, atual->dado);
-        atual = atual->prox;
-    }
-    while (temp->topo) {
-        push(copia, pop(temp));
-    }
-    
-    destruirPilha(temp);
-    return copia;
-}
-
 void reinicializarPilha(Pilha* p, int valores[], int tamanho) {
     while (p->topo) {
         pop(p);

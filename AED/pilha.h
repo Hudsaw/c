@@ -16,7 +16,6 @@ void destruirPilha(Pilha* p);
 void push(Pilha* p, int valor);
 int pop(Pilha* p);
 int tamanho(Pilha* p);
-Pilha* copiarPilha(Pilha* original);
 void reinicializarPilha(Pilha* p, int valores[], int tamanho);
 
 #endif
