@@ -1,17 +1,22 @@
 #include <stdio.h>
 #include <string.h>
 
-void pausar() {
-    printf("\nPressione Enter para continuar...");
-    getchar();
-    getchar();
-    system("cls");
-}
-
 typedef struct {
     float base;
     float altura;
 } Retangulo;
+
+typedef struct {
+    char nome[50];
+    int matricula;
+    float nota1;
+    float nota2;
+} Aluno;
+
+typedef struct {
+    int reais;
+    int centavos;
+} Moeda;
    
 void inicializarRetangulo(Retangulo *r, float base, float altura) {
     r->base = base;
@@ -26,7 +31,7 @@ float calcularPerimetro(Retangulo *r) {
     return 2 * (r->base + r->altura);
 }
 
-void exercicio1()
+void tad1_retangulo()
 {
     Retangulo ret;
     float base, altura;
@@ -43,16 +48,9 @@ void exercicio1()
 }
 
 
-typedef struct {
-    char nome[50];
-    int matricula;
-    float nota1;
-    float nota2;
-} Aluno;
-
 void iniciarAluno(Aluno *a, char nome[], int matricula, float nota1, float nota2){
     strncpy(a->nome, nome, 50);
-    a->nome[50] = nome;
+    a->nome[49] = '\0';
     a->matricula = matricula;
     a->nota1 = nota1;
     a->nota2 = nota2;
@@ -71,7 +69,7 @@ void exibirAluno(Aluno *a){
     printf("Media: %.2f\n", calcularMedia(a));
 }
 
-void exercicio2()
+void tad2_aluno()
 {
     Aluno a;
     char nome[50];
@@ -93,11 +91,6 @@ void exercicio2()
     exibirAluno(&a);
 }
 
-typedef struct {
-    int reais;
-    int centavos;
-} Moeda;
-
 void iniciarMoeda(Moeda *m, int reais, int centavos) {
     m->reais = reais;
     m->centavos = centavos;
@@ -116,7 +109,7 @@ void exibirMoeda(Moeda *m) {
     printf("Valor: R$ %d,%02d\n", m->reais, m->centavos);
 }
 
-void exercicio3()
+void tad3_moeda()
 {
     Moeda m1, m2, resultado;
     int reais1, centavos1, reais2, centavos2;
@@ -131,47 +124,3 @@ void exercicio3()
     somarMoedas(&m1, &m2, &resultado);
     exibirMoeda(&resultado);
 }
-
-int main()
-{
-    int opcao;
-
-    do {
-        printf("\n=== MENU DE EXERCICIOS ===\n");
-        printf("1. Retangulo\n");
-        printf("2. Aluno\n");
-        printf("3. Moeda\n");
-        printf("0. Sair\n");
-        printf("Escolha uma opcao: ");
-        scanf("%d", &opcao);
-
-
-        switch (opcao) {
-            case 1:
-                exercicio1();
-                pausar();
-                break;
-            case 2:
-                exercicio2();
-                pausar();
-                break;
-            case 3:
-                exercicio3();
-                pausar();
-                break;
-            case 0:
-                printf("Saindo do programa.\n");
-                break;
-            default:
-                printf("Opcao invalida! Tente novamente.\n");
-                pausar();
-                break;
-        }
-
-
-    } while (opcao != 0);
-
-
-    return 0;
-}
-

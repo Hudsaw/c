@@ -1,14 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-void pausar() {
-    printf("\nPressione Enter para continuar...");
-    getchar();
-    getchar(); 
-    system("cls"); 
-}
-
-void exercicio1() {
+void revisao1_ponteiros() {
     int inteiro = 10;
     float real = 3.14;
     char caractere = 'A';
@@ -29,7 +22,7 @@ void exercicio1() {
     printf("inteiro = %d, real = %.2f, caractere = %c\n", inteiro, real, caractere);
 }
 
-void exercicio2() {
+void revisao2_enderecos() {
     int a;
     int b;
 
@@ -52,7 +45,7 @@ void ordenar(int *a, int *b) {
     }
 }
 
-void exercicio3() {
+void revisao3_ordenar() {
     int x, y;
 
     printf("=== Exercicio 3 ===\n");
@@ -66,7 +59,7 @@ void exercicio3() {
     printf("Depois (maior em x, menor em y): x = %d, y = %d\n", x, y);
 }
 
-void exercicio4() {
+void revisao4_array_floats() {
     float array[10];
 
     printf("=== Exercicio 4 ===\n");
@@ -85,14 +78,14 @@ void imprimir(float *arr, int tamanho) {
     printf("\n");
 }
 
-void exercicio5() {
+void revisao5_imprimir_array() {
     float array[5] = {1.1, 2.2, 3.3, 4.4, 5.5};
 
     printf("=== Exercicio 5 ===\n");
     imprimir(array, 5);
 }
 
-void exercicio6() {
+void revisao6_valores_pares() {
     int array[5];
 
     printf("=== Exercicio 6 ===\n");
@@ -107,58 +100,4 @@ void exercicio6() {
             printf("array[%d] = %d -> endereco: %p\n", i, array[i], &array[i]);
         }
     }
-}
-
-int main() {
-    int opcao;
-
-    do {
-        printf("\n=== MENU DE EXERCICIOS ===\n");
-        printf("1. Ponteiros e modificacao de valores\n");
-        printf("2. Comparar enderecos\n");
-        printf("3. Maior e menor via ponteiros\n");
-        printf("4. Enderecos de array de floats\n");
-        printf("5. Imprimir array com aritmetica de ponteiros\n");
-        printf("6. Enderecos de valores pares\n");
-        printf("0. Sair\n");
-        printf("Escolha uma opcao: ");
-        scanf("%d", &opcao);
-
-        switch (opcao) {
-            case 1:
-                exercicio1();
-                pausar();
-                break;
-            case 2:
-                exercicio2();
-                pausar();
-                break;
-            case 3:
-                exercicio3();
-                pausar();
-                break;
-            case 4:
-                exercicio4();
-                pausar();
-                break;
-            case 5:
-                exercicio5();
-                pausar();
-                break;
-            case 6:
-                exercicio6();
-                pausar();
-                break;
-            case 0:
-                printf("Saindo do programa.\n");
-                break;
-            default:
-                printf("Opcao invalida! Tente novamente.\n");
-                pausar();
-                break;
-        }
-
-    } while (opcao != 0);
-
-    return 0;
 }
