@@ -174,3 +174,56 @@ void pilha9_imprime_inverso(Pilha* p){
    pilha9_imprime_inverso(p);
    printf("%d ", valor); 
 }
+
+int pilha10_soma(Pilha* p){
+   if (!p || !p->topo) return 0;
+   int valor = pop(p);
+   return valor + pilha10_soma(p); 
+}
+
+int pilha11_ordem(Pilha* p) {
+    if (!p || !p->topo) return -1;
+
+    int atual = pop(p);
+    int anterior = pilha11_ordem(p);
+
+    if (anterior == -1) return atual;
+    if (anterior > atual) return -2;
+
+    return atual; 
+}
+
+int pilha12_pares(Pilha* p) {
+    if (!p || !p->topo) return 0;
+    int valor = pop(p);
+    return ((valor % 2) ? 0 : 1) + pilha12_pares(p);
+}
+
+int pilha13_maior(Pilha* p) {
+    if (!p || !p->topo) return 0;
+    int atual = pop(p);
+    int anterior = pilha13_maior(p);
+
+    if (anterior > atual) return anterior;
+    return atual; 
+}
+
+int palindromo(Pilha* p) {
+    if (!p->topo) return -2; 
+
+    int atual = pop(p);
+    int fundo = palindromo(p);
+
+    if (fundo == -1) return -1;
+    if (fundo == -2) return atual; 
+    if (fundo != atual) return -1;
+
+    return atual;
+}
+
+int pilha14_palindromo(Pilha* p) {
+    if (!p || !p->topo) return 1;
+
+    int resultado = palindromo(p);
+    return (resultado != -1);
+}

@@ -55,6 +55,9 @@ int main() {
                     printf("7. Inverter pilha\n");
                     printf("8. Balanceamento\n");
                     printf("9. Imprime Inverso\n");
+                    printf("10. Soma pilha\n");
+                    printf("11. Ordem pilha\n");
+                    printf("12. Pares na pilha\n");
                     printf("0. Voltar\n");
                     printf("Escolha uma opcao: ");
                     scanf("%d", &sub_opcao);
@@ -97,7 +100,36 @@ int main() {
                             } break;
                         case 8: pilha8_balanceamento(); break;
                         case 9: 
+                            printf("Elementos em ordem de insercao:\n");
                             pilha9_imprime_inverso(r);
+                            reinicializarPilha(r, valores_r, 5);
+                            break;
+                        case 10: 
+                            printf("Soma de elementos: %d", pilha10_soma(r));
+                            reinicializarPilha(r, valores_r, 5);
+                            break;
+                        case 11: 
+                            if (pilha11_ordem(r) != -2){
+                                printf("A ordem dos elementos eh crescente!");
+                            } else{
+                                printf("A ordem dos elementos nem eh crescente!");
+                            }
+                            reinicializarPilha(r, valores_r, 5);
+                            break;
+                        case 12: 
+                            printf("A pilha tem %d elementos pares!", pilha12_pares(r));
+                            reinicializarPilha(r, valores_r, 5);
+                            break;
+                        case 13: 
+                            printf("O maior elemento da pilha eh: %d!", pilha13_maior(r));
+                            reinicializarPilha(r, valores_r, 5);
+                            break;
+                        case 14:
+                            if (pilha14_palindromo(r)) {
+                                printf("A pilha nem eh palindromo!");
+                            } else {
+                                printf("A pilha eh palindromo!");
+                            }
                             reinicializarPilha(r, valores_r, 5);
                             break;
                         case 0: break;
