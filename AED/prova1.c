@@ -54,6 +54,7 @@ int main() {
                     printf("6. Comparar tamanho\n");
                     printf("7. Inverter pilha\n");
                     printf("8. Balanceamento\n");
+                    printf("9. Imprime Inverso\n");
                     printf("0. Voltar\n");
                     printf("Escolha uma opcao: ");
                     scanf("%d", &sub_opcao);
@@ -95,6 +96,10 @@ int main() {
                                 default: printf("Opcao invalida!\n");
                             } break;
                         case 8: pilha8_balanceamento(); break;
+                        case 9: 
+                            pilha9_imprime_inverso(r);
+                            reinicializarPilha(r, valores_r, 5);
+                            break;
                         case 0: break;
                         default: printf("Opcao invalida!\n");
                     }

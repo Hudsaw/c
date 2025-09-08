@@ -128,15 +128,16 @@ void pilha7_inverter_pilha(Pilha* p) {
 }
 
 void pilha8_balanceamento() {
-char str[101];
-    printf("Digite a sequencia: ");
-    fgets(str, 101, stdin);
-    str[strcspn(str, "\n")] = '\0';
-
+    int n; 
+    char c;   
     Pilha* p = criarPilha();
 
-    for (int i = 0; str[i] != '\0'; i++) {
-        char c = str[i];
+    printf("Digite o numero  de elementos:\n");
+    scanf("%d", &n);
+
+    for (int i = 0; i < n; i++) {
+        printf("Digite o elementos %d: ", i+1);
+        scanf(" %c", &c);
 
         if (c == '(' || c == '[' || c == '{') {
             push(p, c);
@@ -144,6 +145,7 @@ char str[101];
         else if (c == ')' || c == ']' || c == '}') {
             if (!p->topo) {
                 printf("Sequencia nao balanceada\n");
+                destruirPilha(p);
                 return; 
             }
             int topo = pop(p);
@@ -151,16 +153,24 @@ char str[101];
                   (topo == '[' && c == ']') ||
                   (topo == '{' && c == '}'))) {
                 printf("Sequencia nao balanceada\n");
+                destruirPilha(p);
                 return;
             }
         }
     }
 
-    if (tamanho(p) == 0) {
+    if (!p) {
         printf("Sequencia balanceada\n");
     } else {
         printf("Sequencia nao balanceada\n");
     }
     
     destruirPilha(p);
+}
+
+void pilha9_imprime_inverso(Pilha* p){
+   if (!p || !p->topo) return;
+   int valor = pop(p);
+   pilha9_imprime_inverso(p);
+   printf("%d ", valor); 
 }
