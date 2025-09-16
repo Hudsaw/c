@@ -227,3 +227,24 @@ int pilha14_palindromo(Pilha* p) {
     int resultado = palindromo(p);
     return (resultado != -1);
 }
+
+int pilha15_stpalindromo(Pilha* p) {
+    Elemento* a;
+    Pilha* i = criarPilha();
+    
+    while (a) {
+        push (i, a->dado);
+        a = a->prox;
+    }
+    a= p->topo;
+    
+    while (a) {
+        if(pop(i)!= a->dado){
+        destruir_pilha(i);
+        return 0;
+        }
+        a = a->prox;
+    }
+    destruir_pilha(i);
+    return 1;
+}

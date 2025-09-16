@@ -6,5 +6,7 @@
         "stdlib.h": "c",
         "string.h": "c",
         "pilha.h": "c"
-    }
+    },
+    "C_Cpp.errorSquiggles": "enabled",
+    "C_Cpp.default.compilerPath": "C:/MinGW/bin/gcc.exe"
 }

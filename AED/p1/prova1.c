@@ -20,7 +20,7 @@ int main() {
     Pilha* s = criarPilha();
     Pilha* t = criarPilha();
     
-    int valores_r[] = {10, 15, 20, 25, 30};
+    int valores_r[] = {'a', 'r', 'e', 'r', 'a'};
     int valores_s[] = {'+', '-', '*', '/'};
     int valores_t[] = {10, 15, 20, 25, 30};
     
