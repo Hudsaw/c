@@ -1,9 +1,8 @@
-#include <stdlib.h>
+/* fila.c */
 #include "fila.h"
 
 Fila* criarFila() {
     Fila* f = malloc(sizeof(Fila));
-    if (!f) return NULL;
     f->inicio = NULL;
     f->fim = NULL;
     return f;
@@ -12,8 +11,7 @@ Fila* criarFila() {
 void inserir(Fila* f, int x) {
     Elemento* e = malloc(sizeof(Elemento));
     e->dado = x;
-    e->prox = NULL; 
-
+    e->prox = NULL;
     if (!f->fim) {
         f->inicio = e;
         f->fim = e;
@@ -24,33 +22,28 @@ void inserir(Fila* f, int x) {
 }
 
 int remover(Fila* f) {
-    if (!f || !f->inicio) return -999; 
-
+    if (!f || !f->inicio) {
+        printf("Fila vazia!\n");
+        return -999;
+    }
     Elemento* aux = f->inicio;
     int valor = aux->dado;
-
-    f->inicio = aux->prox; 
-
-    if (!f->inicio) {
-        f->fim = NULL;
-    }
-
+    f->inicio = aux->prox;
+    if (!f->inicio) f->fim = NULL;
     free(aux);
     return valor;
 }
 
 void destruirFila(Fila* f) {
-    if (!f) return;
-    while (f->fim) {
-        retirar(f);
+    while (f && f->inicio) {
+        remover(f);
     }
     free(f);
 }
 
 int tamanho(Fila* f) {
-    if (!f) return 0;
-    Elemento* aux = f->fim;
     int cont = 0;
+    Elemento* aux = f->inicio;
     while (aux) {
         cont++;
         aux = aux->prox;
@@ -58,11 +51,11 @@ int tamanho(Fila* f) {
     return cont;
 }
 
-void reinicializarFila(Fila* f, int valores[], int tamanho) {
-    while (f->fim) {
-        retirar(f);
+void reinicializarFila(Fila* f, int valores[], int n) {
+    while (f->inicio) {
+        remover(f);
     }
-    for (int i = 0; i < tamanho; i++) {
+    for (int i = 0; i < n; i++) {
         inserir(f, valores[i]);
     }
 }

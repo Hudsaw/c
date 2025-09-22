@@ -1,21 +1,24 @@
+/* fila.h */
 #ifndef FILA_H
 #define FILA_H
 
-typedef struct elemento {
+#include <stdio.h>
+#include <stdlib.h>
+
+typedef struct Elemento {
     int dado;
-    struct elemento *prox;
+    struct Elemento* prox;
 } Elemento;
 
-typedef struct {
-    Elemento *inicio;
-    Elemento *fim;
+typedef struct Fila {
+    Elemento* inicio;
+    Elemento* fim;
 } Fila;
 
-// Funções básicas da pilha
 Fila* criarFila();
-void destruirFila(Fila* f);
-void inserir(Fila* f, int valor);
+void inserir(Fila* f, int x);
 int remover(Fila* f);
+void destruirFila(Fila* f);
 int tamanho(Fila* f);
 void reinicializarFila(Fila* f, int valores[], int tamanho);
 
