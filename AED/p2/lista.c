@@ -2,15 +2,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-typedef struct Elemento{
-	int dado;
-	struct Elemento* prox;
-} Elemento;
-
-typedef struct Lista{
-	Elemento* inicio;
-} Lista;
-
 Lista* criarLista() {
     Lista* l = malloc(sizeof(Lista));
     if (l) l->inicio = NULL;
@@ -27,7 +18,7 @@ void destruirLista(Lista* l) {
     free(l);
 }
 
-int tamanho(Lista* l) {
+int tamanhoLista(Lista* l) {
     int cont = 0;
     Elemento* aux = l->inicio;
     while (aux) {
@@ -55,7 +46,7 @@ Elemento* buscarPosicao(Lista* l, int pos) {
     Elemento* aux;
     if (!l) return NULL;
     aux = l->inicio;
-    if(pos > tamanho(l)) return NULL;
+    if(pos > tamanhoLista(l)) return NULL;
 
     while (cont < pos) {
         aux = aux->prox;
@@ -74,7 +65,7 @@ Elemento* inserirInicio(Lista* l, int x) {
     return e;
 }
 
-Elemento* inserir(Lista* l, int x) {
+Elemento* inserirLista(Lista* l, int x) {
     Elemento* e, *aux;
     if (!l) return NULL;
     e = (Elemento*) malloc(sizeof(Elemento));
@@ -108,7 +99,7 @@ Elemento* inserirPosicao(Lista* l, int x, int pos) {
     return e;
 }
 
-void remover(Lista* l, int x) {
+void removerLista(Lista* l, int x) {
     Elemento *e, *aux;
     e = l->inicio;
     aux = e;
@@ -149,22 +140,3 @@ void imprimirLista(Lista* l){
         aux = aux->prox;
     }
 }
-
-int main(){
-    Lista* l = criarLista(); 
-    inserir(l, 1);
-    inserir(l, 2);
-    inserir(l, 3);
-    inserir(l, 4);
-    inserir(l, 5);
-    
-    remover(l, 3);
-    inserirPosicao(l, 6, 2);
-    inserir(l, 7);
-    inserirInicio(l, 8);
-    imprimirLista(l);
-    return 0;
-
-}
-
-saída: 8 1 6 2 4 5 7 

@@ -8,7 +8,7 @@ Fila* criarFila() {
     return f;
 }
 
-void inserir(Fila* f, int x) {
+void inserirFila(Fila* f, int x) {
     Elemento* e = malloc(sizeof(Elemento));
     e->dado = x;
     e->prox = NULL;
@@ -21,7 +21,7 @@ void inserir(Fila* f, int x) {
     }
 }
 
-int remover(Fila* f) {
+int removerFila(Fila* f) {
     if (!f || !f->inicio) {
         printf("Fila vazia!\n");
         return -999;
@@ -36,12 +36,12 @@ int remover(Fila* f) {
 
 void destruirFila(Fila* f) {
     while (f && f->inicio) {
-        remover(f);
+        removerFila(f);
     }
     free(f);
 }
 
-int tamanho(Fila* f) {
+int tamanhoFila(Fila* f) {
     int cont = 0;
     Elemento* aux = f->inicio;
     while (aux) {
@@ -53,9 +53,9 @@ int tamanho(Fila* f) {
 
 void reinicializarFila(Fila* f, int valores[], int n) {
     while (f->inicio) {
-        remover(f);
+        removerFila(f);
     }
     for (int i = 0; i < n; i++) {
-        inserir(f, valores[i]);
+        inserirFila(f, valores[i]);
     }
 }

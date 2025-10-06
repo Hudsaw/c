@@ -5,7 +5,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-typedef struct Elemento {
+typedef struct {
     int dado;
     struct Elemento* prox;
 } Elemento;
@@ -16,10 +16,10 @@ typedef struct Fila {
 } Fila;
 
 Fila* criarFila();
-void inserir(Fila* f, int x);
-int remover(Fila* f);
+void inserirFila(Fila* f, int x);
+int removerFila(Fila* f);
 void destruirFila(Fila* f);
-int tamanho(Fila* f);
+int tamanhoFila(Fila* f);
 void reinicializarFila(Fila* f, int valores[], int tamanho);
 
 #endif
