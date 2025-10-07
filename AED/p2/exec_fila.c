@@ -28,7 +28,7 @@ int maiorFila(Fila* f) {
 // 3. Contagem recursiva de elementos
 int contarRecursivo(Fila* f) {
     if(!f || !f->inicio) return 0;
-    int valor = removerFila(f);
+    removerFila(f);
     return 1 + contarRecursivo(f);
 }
 
@@ -48,14 +48,9 @@ int soMaiusculas(Fila* f) {
 void inverterFilaComPilha(Fila* f) {
     if (!f || !f->inicio) return;
     Pilha* p = criarPilha();
-    while(f->inicio){
-    inserirPilha(p, removerFila(f));
-    }
-    while(p->topo){
-    inserirFila(f, removerPilha(p));
-    }
+    while(f->inicio) inserirPilha(p, removerFila(f));
+    while(p->topo) inserirFila(f, removerPilha(p));
     destruirPilha(p);
-    return f;
 }
 
 // 6. Remove números negativos
@@ -75,10 +70,11 @@ int ehVogal(char c) {
     return (c == 'a' || c == 'e' || c == 'i' || c == 'o' || c == 'u' ||
             c == 'A' || c == 'E' || c == 'I' || c == 'O' || c == 'U');
 }
+
 int contarVogaisRec(Fila* f) {
     if (!f || !f->inicio) return 0;
     char c = (char)removerFila(f);
-    return ehvogal(c) + contarVogaisRec(f);
+    return ehVogal(c) + contarVogaisRec(f);
 }
 
 // 8. Verifica se duas filas são idênticas
@@ -94,7 +90,7 @@ Fila* paresFila(Fila* f) {
     if (!f || !f->inicio) return criarFila();
     Fila* n = criarFila();
     while(f->inicio){
-        int x = remover(f);
+        int x = removerFila(f);
         if(x % 2 == 0) inserirFila(n, x);
     }
     return n;

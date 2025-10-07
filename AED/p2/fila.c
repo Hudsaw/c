@@ -59,3 +59,21 @@ void reinicializarFila(Fila* f, int valores[], int n) {
         inserirFila(f, valores[i]);
     }
 }
+
+void imprimirFila(Fila* f){
+    if (!f) return;
+    Elemento* aux = f->inicio; 
+    while (aux) {     
+        printf("%d ", aux->dado);
+        aux = aux->prox;
+    }
+}
+
+void imprimirFilaChar(Fila* f){
+    if (!f) return;
+    Elemento* aux = f->inicio; 
+    while (aux) {     
+        printf("%c ", (char)aux->dado);
+        aux = aux->prox;
+    }
+}

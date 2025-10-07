@@ -1,94 +1,130 @@
+#include <stdio.h>
 #include "lista.h"
-#include <math.h>
 
 // 1. Maior e menor elemento
-int maiorLista(Lista* l) {
-    if (!l || !l->inicio) return -1;
-    Elemento* p = l->inicio;
-    int maior = p->dado;
-    while (p) {
-        if (p->dado > maior) maior = p->dado;
-        p = p->prox;
+Elemento* maiorLista(Lista* l) {
+    if(!l || !l->inicio) return NULL;
+    Elemento* e = l->inicio;
+    Elemento* pMaior = e;
+    while(e){
+        if(e->dado > pMaior->dado) pMaior = e;
+        e = e->prox;
     }
-    return maior;
+    return pMaior;
 }
 
-int menorLista(Lista* l) {
-    if (!l || !l->inicio) return -1;
-    Elemento* p = l->inicio;
-    int menor = p->dado;
-    while (p) {
-        if (p->dado < menor) menor = p->dado;
-        p = p->prox;
+
+Elemento* menorLista(Lista* l) {
+    if(!l || !l->inicio) return NULL;
+    Elemento* e = l->inicio;
+    Elemento* pMenor = e;
+    while(e){
+        if(e->dado < pMenor->dado) pMenor = e;
+        e = e->prox;
     }
-    return menor;
+    return pMenor;
 }
+
 
 // 2. Soma dos elementos
 int somaLista(Lista* l) {
-    if (!l || !l->inicio) return 0;
-    Elemento* p = l->inicio;
+    if(!l || !l->inicio) return 0;
     int soma = 0;
-    while (p) {
-        soma += p->dado;
-        p = p->prox;
+    Elemento* e = l->inicio;
+    while(e){
+        soma+= e->dado;
+        e = e->prox;
     }
     return soma;
 }
 
-// 3. Média dos valores
-double mediaLista(Lista* l) {
-    int n = tamanhoLista(l);
-    if (n == 0) return 0.0;
-    return (double)somaLista(l) / n;
+
+int somaListaRec(Lista* l){
+    if(!l || !l->inicio) return 0;
+    int soma = removerListaRet(l);
+    return soma + somaLista(l);
 }
 
-// 4. Conta elementos acima da média
-int acimaMedia(Lista* l) {
-    double media = mediaLista(l);
+
+// 3. Media dos elementos
+float mediaLista(Lista* l) {
+    if(!l || !l->inicio) return 0;
+    return (float)somaLista(l)/tamanhoLista(l);
+}
+
+
+// 4. Qtos acima da mediaLista
+int acimaMedia(Lista* l){
+    Elemento* e = l->inicio;
+    float media = mediaLista(l);
+    if(!media) return 0;
     int cont = 0;
-    Elemento* p = l->inicio;
-    while (p) {
-        if (p->dado > media) cont++;
-        p = p->prox;
+    while(e){
+        if(e->dado > media) {
+            cont++;
+        }
+        e = e->prox;
     }
     return cont;
 }
 
-// 5. Conta ocorrências de X
-int contaX(Lista* l, int x) {
+
+// 5. Qtas vezes repete
+int repeteco(Lista* l, int x){
+    if(!l || !l->inicio) return 0;
+    Elemento* e = l->inicio;
     int cont = 0;
-    Elemento* p = l->inicio;
-    while (p) {
-        if (p->dado == x) cont++;
-        p = p->prox;
+    while(e){
+        if(x == e->dado){
+            cont++;
+        }
+        e = e->prox;
     }
     return cont;
 }
+
 
 // 6. Decimal para binário usando lista
 Lista* decimalParaBinario(int n) {
     Lista* l = criarLista();
-    if (n == 0) {
-        inserirInicio(l, 0);
-        return l;
-    }
-    while (n > 0) {
-        inserirInicio(l, n % 2);
-        n /= 2;
-    }
+    if(!n) inserirLista(l, 0);
+    while(n>0){
+        inserirInicio(l, n%2);
+        n = n/2;
+    } 
     return l;
 }
 
 // 7. Interseção de duas listas
 Lista* intersecao(Lista* l1, Lista* l2) {
-    Lista* res = criarLista();
-    Elemento* p1 = l1->inicio;
-    while (p1) {
-        if (buscarElemento(l2, p1->dado) && !buscarElemento(res, p1->dado)) {
-            inserirLista(res, p1->dado);
-        }
-        p1 = p1->prox;
+    Lista* l3 = criarLista();
+    Elemento* e = l1->inicio;
+    while (e) {
+        if(buscarElemento(l2, e->dado)) inserirLista(l3, e->dado);
+        e = e->prox;
     }
-    return res;
+    return l3;
 }
+
+
+// 8. Remover Repetidos
+void removerRepetidos(Lista* l) {
+    if (!l || !l->inicio) return;
+    Elemento *atual = l->inicio;
+    while (atual) {
+        Elemento *procurar = atual->prox;
+        Elemento *anterior = atual;
+        while (procurar) {
+            if (procurar->dado == atual->dado) {
+                anterior->prox = procurar->prox;
+                free(procurar);
+                procurar = anterior->prox;
+            } else {
+                anterior = procurar;
+                procurar = procurar->prox;
+            }
+        }
+        atual = atual->prox;
+    }
+}
+

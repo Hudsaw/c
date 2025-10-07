@@ -1,5 +1,7 @@
 /* processos.c */
 #include "processo.h"
+#include <stdio.h>
+
 
 // Função para criar fila de processos
 FilaProcessos* criarFilaProcessos() {

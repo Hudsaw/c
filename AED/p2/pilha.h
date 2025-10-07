@@ -1,10 +1,6 @@
 #ifndef PILHA_H
 #define PILHA_H
-
-typedef struct elemento {
-    int dado;
-    struct elemento *prox;
-} Elemento;
+#include "elemento.h"
 
 typedef struct {
     Elemento *topo;

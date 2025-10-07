@@ -1,3 +1,4 @@
+#include "elemento.h"
 #include "fila.h"
 #include "filaviao.h"
 #include "processo.h"
@@ -7,17 +8,13 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <ctype.h>
-
-typedef struct {
-    int dado;
-    struct Elemento* prox;
-} Elemento;
 
 // Protótipos auxiliares
 void preencherFilaExemplo(Fila* f);
 void preencherFilaCharExemplo(Fila* f);
 void preencherListaExemplo(Lista* l);
+void menuFila();
+void menuLista();
 void menuAviao();
 void menuProcessos();
 
@@ -25,190 +22,33 @@ int main() {
     int op;
     do {
         printf("\n=== SUITE DE TESTES - FILAS E LISTAS ===\n");
-        printf("1. Executar funções de Fila (inteiros)\n");
-        printf("2. Executar funções de Fila (caracteres)\n");
-        printf("3. Executar funções de Lista\n");
-        printf("4. Simular Controle de Tráfego Aéreo (Aviões)\n");
-        printf("5. Simular Gerenciador de Processos\n");
+        printf("1. Executar funcoes de Fila\n");
+        printf("2. Executar funcoes de Lista\n");
+        printf("3. Simular Controle de Trafego Aereo (Avioes)\n");
+        printf("4. Simular Gerenciador de Processos\n");
         printf("0. Sair\n");
-        printf("Escolha uma opção: ");
+        printf("Escolha uma opcao: ");
         scanf("%d", &op);
         getchar(); // limpar buffer
 
         switch (op) {
-            case 1: {
-                Fila* f = criarFila();
-                preencherFilaExemplo(f);
-                int sub;
-                do {
-                    printf("\n--- Funções de Fila (inteiros) ---\n");
-                    printf("1. Soma dos elementos\n");
-                    printf("2. Maior elemento\n");
-                    printf("3. Contar elementos (recursivo)\n");
-                    printf("4. Remover negativos\n");
-                    printf("5. Gerar fila com pares\n");
-                    printf("6. Tempo total de atendimento (soma)\n");
-                    printf("7. Intercalar duas filas\n");
-                    printf("8. Inverter F1 em F2\n");
-                    printf("9. Verificar se duas filas são iguais\n");
-                    printf("0. Voltar\n");
-                    printf("Escolha: ");
-                    scanf("%d", &sub);
-                    getchar();
-
-                    if (sub == 7) {
-                        Fila* f1 = criarFila(), *f2 = criarFila();
-                        inserirFila(f1, 1); inserirFila(f1, 3);
-                        inserirFila(f2, 2); inserirFila(f2, 4);
-                        Fila* f3 = intercalarFilas(f1, f2);
-                        printf("Fila intercalada: ");
-                        while (f3->inicio) printf("%d ", removerFila(f3));
-                        printf("\n");
-                        destruirFila(f1); destruirFila(f2); destruirFila(f3);
-                    } else if (sub == 8) {
-                        Fila* f2 = criarFila();
-                        inverterF1emF2(f, f2);
-                        printf("F1 invertida em F2: ");
-                        while (f2->inicio) printf("%d ", removerFila(f2));
-                        printf("\n");
-                        destruirFila(f2);
-                        // restaurar f para testes posteriores
-                        reinicializarFila(f, (int[]){1, -2, 3, 4, -5}, 5);
-                    } else if (sub == 9) {
-                        Fila* fA = criarFila(), *fB = criarFila();
-                        inserirFila(fA, 1); inserirFila(fA, 2);
-                        inserirFila(fB, 1); inserirFila(fB, 2);
-                        printf("Filas iguais? %s\n", filasIguais(fA, fB) ? "Sim" : "Não");
-                        destruirFila(fA); destruirFila(fB);
-                    } else if (sub == 1) {
-                        printf("Soma: %d\n", somaFila(f));
-                    } else if (sub == 2) {
-                        printf("Maior: %d\n", maiorFila(f));
-                    } else if (sub == 3) {
-                        printf("Contagem recursiva: %d\n", contarRecursivo(f));
-                    } else if (sub == 4) {
-                        removerNegativos(f);
-                        printf("Fila sem negativos: ");
-                        Fila* tmp = criarFila();
-                        while (f->inicio) {
-                            int v = removerFila(f);
-                            printf("%d ", v);
-                            inserirFila(tmp, v);
-                        }
-                        while (tmp->inicio) inserirFila(f, removerFila(tmp));
-                        printf("\n");
-                        destruirFila(tmp);
-                        reinicializarFila(f, (int[]){1, -2, 3, 4, -5}, 5);
-                    } else if (sub == 5) {
-                        Fila* pares = paresFila(f);
-                        printf("Pares: ");
-                        while (pares->inicio) printf("%d ", removerFila(pares));
-                        printf("\n");
-                        destruirFila(pares);
-                    } else if (sub == 6) {
-                        printf("Tempo total de atendimento: %d minutos\n", tempoTotalAtendimento(f));
-                    }
-                } while (sub != 0);
-                destruirFila(f);
+            case 1:
+                menuFila();
                 break;
-            }
-
-            case 2: {
-                Fila* f = criarFila();
-                preencherFilaCharExemplo(f);
-                int sub;
-                do {
-                    printf("\n--- Funções de Fila (caracteres) ---\n");
-                    printf("1. Verificar se só tem maiúsculas\n");
-                    printf("2. Contar vogais (recursivo)\n");
-                    printf("3. Inverter com pilha\n");
-                    printf("0. Voltar\n");
-                    printf("Escolha: ");
-                    scanf("%d", &sub);
-                    getchar();
-
-                    if (sub == 1) {
-                        printf("Só maiúsculas? %s\n", soMaiusculas(f) ? "Sim" : "Não");
-                    } else if (sub == 2) {
-                        printf("Vogais: %d\n", contarVogaisRec(f));
-                    } else if (sub == 3) {
-                        inverterFilaComPilha(f);
-                        printf("Fila invertida: ");
-                        while (f->inicio) printf("%c ", (char)removerFila(f));
-                        printf("\n");
-                        // recriar para próximos testes
-                        preencherFilaCharExemplo(f);
-                    }
-                } while (sub != 0);
-                destruirFila(f);
+            case 2:
+                menuLista();
                 break;
-            }
-
-            case 3: {
-                Lista* l = criarLista();
-                preencherListaExemplo(l);
-                int sub, x;
-                do {
-                    printf("\n--- Funções de Lista ---\n");
-                    printf("1. Maior e menor elemento\n");
-                    printf("2. Soma e média\n");
-                    printf("3. Contar acima da média\n");
-                    printf("4. Contar ocorrências de X\n");
-                    printf("5. Converter decimal para binário\n");
-                    printf("6. Interseção de duas listas\n");
-                    printf("0. Voltar\n");
-                    printf("Escolha: ");
-                    scanf("%d", &sub);
-                    getchar();
-
-                    if (sub == 1) {
-                        printf("Maior: %d | Menor: %d\n", maiorLista(l), menorLista(l));
-                    } else if (sub == 2) {
-                        printf("Soma: %d | Média: %.2f\n", somaLista(l), mediaLista(l));
-                    } else if (sub == 3) {
-                        printf("Acima da média: %d\n", acimaMedia(l));
-                    } else if (sub == 4) {
-                        printf("Digite X: ");
-                        scanf("%d", &x);
-                        printf("Ocorrências de %d: %d\n", x, contaX(l, x));
-                    } else if (sub == 5) {
-                        printf("Digite um número decimal: ");
-                        scanf("%d", &x);
-                        Lista* bin = decimalParaBinario(x);
-                        printf("%d em binário: ", x);
-                        Elemento* p = bin->inicio;
-                        while (p) { printf("%d", p->dado); p = p->prox; }
-                        printf("\n");
-                        destruirLista(bin);
-                    } else if (sub == 6) {
-                        Lista* l2 = criarLista();
-                        inserirLista(l2, 20); inserirLista(l2, 30); inserirLista(l2, 40);
-                        Lista* inter = intersecao(l, l2);
-                        printf("Interseção: ");
-                        Elemento* p = inter->inicio;
-                        while (p) { printf("%d ", p->dado); p = p->prox; }
-                        printf("\n");
-                        destruirLista(l2); destruirLista(inter);
-                    }
-                } while (sub != 0);
-                destruirLista(l);
-                break;
-            }
-
-            case 4:
+            case 3:
                 menuAviao();
                 break;
-
-            case 5:
+            case 4:
                 menuProcessos();
                 break;
-
             case 0:
                 printf("Encerrando...\n");
                 break;
-
             default:
-                printf("Opção inválida!\n");
+                printf("Opcao invalida!\n");
         }
     } while (op != 0);
 
@@ -216,23 +56,276 @@ int main() {
 }
 
 // === Funções auxiliares ===
-
-void preencherFilaExemplo(Fila* f) {
-    reinicializarFila(f, (int[]){1, -2, 3, 4, -5}, 5);
+void preencherFila(Fila* f, int a, int b, int c, int d, int e) {
+    inserirFila(f, a);
+    inserirFila(f, b);
+    inserirFila(f, c);
+    inserirFila(f, d);
+    inserirFila(f, e);
 }
 
-void preencherFilaCharExemplo(Fila* f) {
-    char str[] = "AeIoU";
-    for (int i = 0; str[i]; i++) {
-        inserirFila(f, (int)str[i]);
-    }
+void preencherLista(Lista* l, int a, int b, int c, int d, int e) {
+    inserirLista(l, a);
+    inserirLista(l, b);
+    inserirLista(l, c);
+    inserirLista(l, d);
+    inserirLista(l, e);
 }
 
-void preencherListaExemplo(Lista* l) {
-    inserirLista(l, 10);
-    inserirLista(l, 20);
-    inserirLista(l, 30);
-    inserirLista(l, 25);
+void menuFila(){
+    int sub;
+    do {
+        printf("\n--- Funcoes de Fila (inteiros) ---\n");
+        printf("01. Soma dos elementos\n");
+        printf("02. Maior elemento\n");
+        printf("03. Contar elementos (recursivo)\n");
+        printf("04. Remover negativos\n");
+        printf("05. Gerar fila com pares\n");
+        printf("06. Tempo total de atendimento (soma)\n");
+        printf("07. Intercalar duas filas\n");
+        printf("08. Inverter F1 em F2\n");
+        printf("09. Verificar se duas filas sao iguais\n");
+        printf("10. Verificar se so tem maiusculas\n");
+        printf("11. Contar vogais (recursivo)\n");
+        printf("12. Inverter com pilha\n");
+        printf("0. Voltar\n");
+        printf("Escolha: ");
+        scanf("%d", &sub);
+        getchar();
+
+        switch (sub) {
+            case 1:{
+                Fila* f = criarFila();
+                preencherFila(f, 10, 20, 30, 25, 20);
+                printf("\nFila: ");
+                imprimirFila(f);
+                printf("Soma: %d\n", somaFila(f));
+                destruirFila(f);
+                break;
+            }
+            case 2:{
+                Fila* f = criarFila();
+                preencherFila(f, 10, 20, 30, 25, 20);
+                printf("\nFila: ");
+                imprimirFila(f);
+                printf("Maior: %d\n", maiorFila(f));
+                destruirFila(f);
+                break;
+            }
+            case 3:{
+                Fila* f = criarFila();
+                preencherFila(f, 10, 20, 30, 25, 20);
+                printf("\nFila: ");
+                imprimirFila(f);
+                printf("Contagem recursiva: %d\n", contarRecursivo(f));
+                destruirFila(f);
+                break;
+            }
+            case 4:{
+                Fila* f = criarFila();
+                preencherFila(f, 10, -20, 30, -25, 20);
+                printf("\nFila inteira: ");
+                imprimirFila(f);
+                printf("\nFila sem negativos: ");
+                removerNegativos(f);
+                imprimirFila(f);
+                destruirFila(f);
+                break;
+            }
+            case 5: {
+                Fila* f1 = criarFila();
+                preencherFila(f1, 10, 21, 30, 25, 20);
+                printf("\nFila inteira: ");
+                imprimirFila(f1);
+                printf("\nFila de pares: ");
+                Fila* f2= paresFila(f1);
+                imprimirFila(f2);
+                destruirFila(f1); destruirFila(f2);
+                break;
+            }
+            case 6:{
+                Fila* f = criarFila();
+                preencherFila(f, 1, 2, 3, 5, 2);
+                printf("\nFila: ");
+                imprimirFila(f);
+                printf("Tempo total de atendimento: %d minutos\n", tempoTotalAtendimento(f));
+                destruirFila(f);
+                break;
+            }
+            case 7: {
+                Fila* f1 = criarFila(), *f2 = criarFila();
+                preencherFila(f1, 10, 20, 30, 40, 50);
+                printf("\nFila 1: ");
+                imprimirFila(f1);
+                preencherFila(f2, 15, 25, 35, 45, 55);
+                printf("\nFila 2: ");
+                imprimirFila(f2);
+                Fila* f3 = intercalarFilas(f1, f2);
+                printf("\nFila Intercalada: ");
+                imprimirFila(f3);
+                destruirFila(f1); destruirFila(f2); destruirFila(f3);
+                break;
+            }
+            case 8: {
+                Fila* f1 = criarFila(), *f2 = criarFila();
+                preencherFila(f1, 10, 20, 30, 25, 20);
+                printf("\nFila 1: ");
+                imprimirFila(f1);
+                inverterF1emF2(f1, f2);
+                printf("F1 invertida em F2: ");
+                imprimirFila(f2);
+                destruirFila(f1); destruirFila(f2);
+                break;
+            }
+            case 9: {
+                Fila* f1 = criarFila(), *f2 = criarFila();
+                preencherFila(f1, 10, 20, 30, 25, 20);
+                printf("\nFila 1: ");
+                imprimirFila(f1);
+                preencherFila(f2, 10, 20, 30, 25, 20);
+                printf("\nFila 2: ");
+                imprimirFila(f2);
+                printf("Filas iguais? %s\n", filasIguais(f1, f1) ? "Sim" : "Nao");
+                destruirFila(f1); destruirFila(f2);
+                break;
+            }
+            case 10:{
+                Fila* f = criarFila();
+                preencherFila(f, 'A', 'e', 'I', 'o', 'V');
+                printf("\nFila: ");
+                imprimirFilaChar(f);
+                printf("So maiusculas? %s\n", soMaiusculas(f) ? "Sim" : "Nao");
+                destruirFila(f);
+                break;
+            }
+            case 11:{
+                Fila* f = criarFila();
+                preencherFila(f, 'A', 'e', 'I', 'o', 'V');
+                printf("\nFila: ");
+                imprimirFilaChar(f);
+                printf("Vogais: %d\n", contarVogaisRec(f));
+                destruirFila(f);
+                break;
+            }
+            case 12:{
+                Fila* f = criarFila();
+                preencherFila(f, 10, 20, 30, 25, 20);
+                printf("\nFila normal: ");
+                imprimirFila(f);
+                inverterFilaComPilha(f);
+                printf("Fila invertida: ");
+                imprimirFila(f);
+                destruirFila(f);
+                break;
+            }
+            case 0:
+                break;
+            default:
+                printf("Opcao invalida!\n");
+        }
+    } while (sub != 0);
+}
+
+void menuLista(){
+    int sub, x;
+    do {
+        printf("\n--- Funcoes de Lista ---\n");
+        printf("1. Maior e menor elemento\n");
+        printf("2. Soma e media\n");
+        printf("3. Contar acima da media\n");
+        printf("4. Contar ocorrencias de X\n");
+        printf("5. Converter decimal para binario\n");
+        printf("6. Intersecao de duas listas\n");
+        printf("7. Listas sem repeticao\n");
+        printf("0. Voltar\n");
+        printf("Escolha: ");
+        scanf("%d", &sub);
+        getchar();
+
+        switch (sub) {
+            case 1: {
+                Lista* l = criarLista();
+                preencherLista(l, 10, 20, 30, 25, 20);
+                printf("\nLista: ");
+                imprimirLista(l);
+                Elemento* maior = maiorLista(l);
+                Elemento* menor = menorLista(l);
+                printf("\nMaior: %d | Menor: %d\n", maior ? maior->dado : 0, menor ? menor->dado : 0);
+                destruirLista(l);
+                break;
+            }
+            case 2:{
+                Lista* l = criarLista();
+                preencherLista(l, 10, 20, 30, 25, 20);
+                printf("\nLista: ");
+                imprimirLista(l);
+                printf("Soma: %d | Media: %.2f\n", somaLista(l), mediaLista(l));
+                destruirLista(l);
+                break;
+            }
+            case 3:{
+                Lista* l = criarLista();
+                preencherLista(l, 10, 20, 30, 25, 20);
+                printf("\nLista: ");
+                imprimirLista(l);
+                printf("Acima da media: %d\n", acimaMedia(l));
+                destruirLista(l);
+                break;
+            }
+            case 4:{
+                Lista* l = criarLista();
+                preencherLista(l, 10, 20, 30, 25, 20);
+                printf("\nLista: ");
+                imprimirLista(l);
+                printf("\nDigite X: ");
+                scanf("%d", &x);
+                printf("Ocorrencias de %d: %d\n", x, repeteco(l, x));
+                destruirLista(l);
+                break;
+            }
+            case 5:{
+                printf("\nDigite um numero decimal: ");
+                scanf("%d", &x);
+                Lista* bin = decimalParaBinario(x);
+                printf("%d em binario: ", x);
+                imprimirLista(bin);
+                printf("\n");
+                destruirLista(bin);
+                break;
+            }
+            case 6: {
+                Lista* l1 = criarLista(), *l2 = criarLista();
+                preencherLista(l1, 10, 20, 30, 25, 20);
+                printf("\nLista 1: ");
+                imprimirLista(l1);
+                preencherLista(l2, 10, 20, 30, 40, 50);
+                printf("\nLista 2: ");
+                imprimirLista(l2);
+                Lista* inter = intersecao(l1, l2);
+                printf("\nIntersecao: ");
+                imprimirLista(inter);
+                printf("\n");
+                destruirLista(l1); destruirLista(l2); destruirLista(inter);
+                break;
+            }
+             case 7: {
+                Lista* l = criarLista();
+                preencherLista(l, 10, 20, 30, 25, 20);
+                printf("\nLista: ");
+                imprimirLista(l);
+                removerRepetidos(l);
+                printf("\nLista sem repetidos: ");
+                imprimirLista(l);
+                printf("\n");
+                destruirLista(l);
+                break;
+            }
+            case 0:
+                break;
+            default:
+                printf("Opcao invalida!\n");
+        }
+    } while (sub != 0);
 }
 
 // === Menu Avião ===
@@ -240,43 +333,56 @@ void menuAviao() {
     FilaAviao* fa = criarFilaAviao();
     int op;
     do {
-        printf("\n--- Controle de Tráfego Aéreo ---\n");
-        printf("1. Adicionar avião à fila\n");
+        printf("\n--- Controle de Trafego Aereo ---\n");
+        printf("1. Adicionar aviao a fila\n");
         printf("2. Autorizar decolagem (remover primeiro)\n");
-        printf("3. Listar todos os aviões\n");
-        printf("4. Mostrar primeiro avião\n");
-        printf("5. Número de aviões na fila\n");
-        printf("6. Furar fila (avião prioritário)\n");
+        printf("3. Listar todos os avioes\n");
+        printf("4. Mostrar primeiro aviao\n");
+        printf("5. Numero de avioes na fila\n");
+        printf("6. Furar fila (aviao prioritario)\n");
         printf("0. Voltar\n");
         printf("Escolha: ");
         scanf("%d", &op);
         getchar();
 
-        if (op == 1) {
-            Aviao a;
-            printf("Modelo: "); fgets(a.modelo, 50, stdin); a.modelo[strcspn(a.modelo, "\n")] = 0;
-            printf("Prefixo: "); fgets(a.prefixo, 10, stdin); a.prefixo[strcspn(a.prefixo, "\n")] = 0;
-            printf("Empresa: "); fgets(a.empresa, 50, stdin); a.empresa[strcspn(a.empresa, "\n")] = 0;
-            printf("Número do voo: "); scanf("%d", &a.numVoo); getchar();
-            printf("Hora de decolagem (HH:MM): "); fgets(a.horaDecolagem, 10, stdin); a.horaDecolagem[strcspn(a.horaDecolagem, "\n")] = 0;
-            enfileirarAviao(fa, a);
-        } else if (op == 2) {
-            if (fa->inicio) {
-                Aviao a = desenfileirarAviao(fa);
-                printf("Decolando: %s (%s) - Voo %d às %s\n", a.modelo, a.prefixo, a.numVoo, a.horaDecolagem);
-            } else {
-                printf("Nenhum avião na fila!\n");
+        switch (op) {
+            case 1: {
+                Aviao a;
+                printf("Modelo: "); fgets(a.modelo, 50, stdin); a.modelo[strcspn(a.modelo, "\n")] = 0;
+                printf("Prefixo: "); fgets(a.prefixo, 10, stdin); a.prefixo[strcspn(a.prefixo, "\n")] = 0;
+                printf("Empresa: "); fgets(a.empresa, 50, stdin); a.empresa[strcspn(a.empresa, "\n")] = 0;
+                printf("Numero do voo: "); scanf("%d", &a.numVoo); getchar();
+                printf("Hora de decolagem (HH:MM): "); fgets(a.horaDecolagem, 10, stdin); a.horaDecolagem[strcspn(a.horaDecolagem, "\n")] = 0;
+                enfileirarAviao(fa, a);
+                break;
             }
-        } else if (op == 3) {
-            listarFila(fa);
-        } else if (op == 4) {
-            mostrarPrimeiro(fa);
-        } else if (op == 5) {
-            printf("Aviões na fila: %d\n", tamanhoFilaAviao(fa));
-        } else if (op == 6) {
-            Aviao a = {"F-16 Militar", "XX-PRI", "Força Aérea", 9999, "IMEDIATO"};
-            furarFila(fa, a);
-            printf("Avião prioritário entrou na frente da fila!\n");
+            case 2:
+                if (fa->inicio) {
+                    Aviao a = desenfileirarAviao(fa);
+                    printf("Decolando: %s (%s) - Voo %d as %s\n", a.modelo, a.prefixo, a.numVoo, a.horaDecolagem);
+                } else {
+                    printf("Nenhum aviao na fila!\n");
+                }
+                break;
+            case 3:
+                listarFila(fa);
+                break;
+            case 4:
+                mostrarPrimeiro(fa);
+                break;
+            case 5:
+                printf("Avioes na fila: %d\n", tamanhoFilaAviao(fa));
+                break;
+            case 6: {
+                Aviao a = {"F-16 Militar", "XX-PRI", "Forca Aerea", 9999, "IMEDIATO"};
+                furarFila(fa, a);
+                printf("Aviao prioritario entrou na frente da fila!\n");
+                break;
+            }
+            case 0:
+                break;
+            default:
+                printf("Opcao invalida!\n");
         }
     } while (op != 0);
 }
@@ -288,7 +394,7 @@ void menuProcessos() {
     do {
         printf("\n--- Gerenciador de Processos ---\n");
         printf("1. Incluir novo processo\n");
-        printf("2. Executar próximo processo\n");
+        printf("2. Executar proximo processo\n");
         printf("3. Matar processo com maior espera\n");
         printf("4. Imprimir fila de processos\n");
         printf("0. Voltar\n");
@@ -296,29 +402,39 @@ void menuProcessos() {
         scanf("%d", &op);
         getchar();
 
-        if (op == 1) {
-            Processo p;
-            printf("ID: "); scanf("%d", &p.id); getchar();
-            printf("Nome: "); fgets(p.name, 50, stdin); p.name[strcspn(p.name, "\n")] = 0;
-            printf("Prioridade (1-5): "); scanf("%d", &p.priority); getchar();
-            printf("Tempo de espera: "); scanf("%d", &p.wait); getchar();
-            enfileirarProcesso(fp, p);
-        } else if (op == 2) {
-            if (fp->inicio) {
-                Processo p = executarProcesso(fp);
-                printf("Executado: %s (ID=%d)\n", p.name, p.id);
-            } else {
-                printf("Nenhum processo na fila!\n");
+        switch (op) {
+            case 1: {
+                Processo p;
+                printf("ID: "); scanf("%d", &p.id); getchar();
+                printf("Nome: "); fgets(p.name, 50, stdin); p.name[strcspn(p.name, "\n")] = 0;
+                printf("Prioridade (1-5): "); scanf("%d", &p.priority); getchar();
+                printf("Tempo de espera: "); scanf("%d", &p.wait); getchar();
+                enfileirarProcesso(fp, p);
+                break;
             }
-        } else if (op == 3) {
-            if (fp->inicio) {
-                Processo p = matarMaiorEspera(fp);
-                printf("Processo morto: %s (wait=%d)\n", p.name, p.wait);
-            } else {
-                printf("Fila vazia!\n");
-            }
-        } else if (op == 4) {
-            imprimirProcessos(fp);
+            case 2:
+                if (fp->inicio) {
+                    Processo p = executarProcesso(fp);
+                    printf("Executado: %s (ID=%d)\n", p.name, p.id);
+                } else {
+                    printf("Nenhum processo na fila!\n");
+                }
+                break;
+            case 3:
+                if (fp->inicio) {
+                    Processo p = matarMaiorEspera(fp);
+                    printf("Processo morto: %s (wait=%d)\n", p.name, p.wait);
+                } else {
+                    printf("Fila vazia!\n");
+                }
+                break;
+            case 4:
+                imprimirProcessos(fp);
+                break;
+            case 0:
+                break;
+            default:
+                printf("Opcao invalida!\n");
         }
     } while (op != 0);
 }

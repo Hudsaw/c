@@ -1,10 +1,8 @@
 /* filaviao.h */
 #ifndef FILAVIAO_H
 #define FILAVIAO_H
-
 #include <stdio.h>
 #include <stdlib.h>
-#include <string.h>
 
 typedef struct {
     char modelo[50];

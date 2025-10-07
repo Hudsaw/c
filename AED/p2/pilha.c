@@ -26,7 +26,7 @@ int removerPilha(Pilha* p) {
 
 void destruirPilha(Pilha* p) {
     while (p->topo) {
-        pop(p);
+        removerPilha(p);
     }
     free(p);
 }
@@ -43,9 +43,9 @@ int tamanhoPilha(Pilha* p) {
 
 void reinicializarPilha(Pilha* p, int valores[], int tamanho) {
     while (p->topo) {
-        pop(p);
+        removerPilha(p);
     }
     for (int i = 0; i < tamanho; i++) {
-        push(p, valores[i]);
+        inserirPilha(p, valores[i]);
     }
 }

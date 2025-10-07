@@ -2,6 +2,16 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+typedef struct Elemento{
+    int dado;
+    struct Elemento* prox;
+} Elemento;
+
+
+typedef struct Lista{
+    Elemento* inicio;
+} Lista;
+
 Lista* criarLista() {
     Lista* l = malloc(sizeof(Lista));
     if (l) l->inicio = NULL;
@@ -118,6 +128,15 @@ void removerLista(Lista* l, int x) {
     free(e);
 }
 
+int removerListaRet(Lista* l) {
+    if (!l || !l->inicio) return 0;
+    Elemento* aux = l->inicio;
+    int valor = aux->dado;
+    l->inicio = aux->prox;
+    return valor;
+}
+
+
 Elemento* primeiro(Lista* l) {
     if (!l) return NULL;
     return l->inicio;
@@ -140,3 +159,5 @@ void imprimirLista(Lista* l){
         aux = aux->prox;
     }
 }
+
+

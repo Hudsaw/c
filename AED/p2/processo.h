@@ -1,9 +1,8 @@
 /* processo.h */
 #ifndef PROCESSO_H
 #define PROCESSO_H
-
+#include <stdlib.h>
 #include <stdio.h>
-#include <stdlib.h> 
 
 typedef struct Processo {
     int id;

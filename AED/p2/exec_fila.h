@@ -1,7 +1,8 @@
 #ifndef EXEC_FILA_H
 #define EXEC_FILA_H
-
 #include "fila.h"
+#include <stdio.h>
+#include <stdlib.h>
 
 // Funções de manipulação de fila de inteiros
 int somaFila(Fila* f);
