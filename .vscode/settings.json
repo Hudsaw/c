@@ -5,7 +5,8 @@
         "teste": "c",
         "stdlib.h": "c",
         "string.h": "c",
-        "pilha.h": "c"
+        "pilha.h": "c",
+        "elemento.h": "c"
     },
     "C_Cpp.errorSquiggles": "disabled",
     "C_Cpp.default.compilerPath": "C:/MinGW/bin/gcc.exe"
