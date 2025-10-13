@@ -293,103 +293,535 @@ void imprimirLista(Lista* l){
     }
 }
 
-
-// 📥 FILA – Exercícios
 // Verificação de palíndromo com restauração
-// Escreva int ehPalindromoFila(Fila* f) que verifica se uma fila de caracteres forma um palíndromo (ex: 'A','B','A').
-// → Restrinção: a fila original deve permanecer intacta após a verificação. Use apenas uma pilha auxiliar.
+int ehPalindromoFila(Fila* f){
+    if (!f || !f->inicio) return 1;
+    Elemento* e = f->inicio;
+    Pilha* p = criarPilha();
+    while(e) {
+        inserirPilha(p, e->dado);
+        e = e->prox;
+    }
+    e = f->inicio;
+    while(e) {
+        if(e->dado != removerPilha(p)) {
+            destruirPilha(p);
+            return 0;
+        }
+        e = e->prox;
+    }
+    destruirPilha(p);
+    return 1;
+}
 
 // Intercalação com preservação total
-// Implemente Fila* intercalarPreservar(Fila* f1, Fila* f2) que cria uma terceira fila intercalando f1 e f2, sem modificar nenhuma das filas originais.
+Fila* intercalarPreservar(Fila* f1, Fila* f2){
+    Fila* f3 = criarFila();
+    Elemento* e1 = f1 ? f1->inicio: NULL;
+    Elemento* e2 = f2 ? f2->inicio: NULL;  
+    while(e1 && e2){
+        inserirFila(f3, e1->dado);
+        inserirFila(f3, e2->dado);
+        e1 = e1->prox;
+        e2 = e2->prox;
+    }
+    while(e1) inserirFila(f3, e1->dado);
+    while(e2) inserirFila(f3, e2->dado);
+    return f3;
+}
 
 // Rotação cíclica eficiente
-// Crie void rotacionarFila(Fila* f, int k) que move os primeiros k elementos para o final da fila.
-// → Ex: [1,2,3,4], k=2 → [3,4,1,2]
-// → Não use vetor auxiliar; use apenas operações de fila.
+void rotacionarFila(Fila* f, int k){
+    if (!f || !f->inicio) return;
+    int n = tamanhoFila(f);
+    if(k>=n) return;
+    while (k > 0) {
+        inserirFila(f, removerFila(f));
+        k--;
+    }
+}
 
 // Fila de prioridade simples (com dois níveis)
-// Dada uma fila de inteiros onde números pares têm prioridade sobre ímpares, reorganize a fila de modo que todos os pares fiquem antes dos ímpares, mantendo a ordem relativa dentro de cada grupo.
-// → Ex: [3, 2, 5, 4, 1] → [2, 4, 3, 5, 1]
+void reordenarFila(Fila* f){
+    if(!f || !f->inicio) return;
+    Fila* f1 = criarFila();
+    Fila* f2 = criarFila();
+    Elemento* e = f->inicio;
+    while(e){
+        if (e->dado %2==0)inserirFila(f1, e->dado);
+        if (e->dado %2!=0)inserirFila(f2, e->dado);
+        e = e->prox;
+    }
+    destruirFila(f);
+    while(f1->inicio)inserirFila(f, removerFila(f1));
+    while(f2->inicio)inserirFila(f, removerFila(f2));
+    destruirFila(f1);destruirFila(f2);
+}
 
-// Simulação de round-robin com limite de tempo
-// Considere uma fila de processos (use FilaProcessos como base). Escreva uma função que simule 1 ciclo de round-robin:
-// Cada processo tem um campo tempoRestante (adicione à estrutura se necessário).
-// A função executa o primeiro processo por quantum unidades de tempo.
-// Se o processo não terminar, volta ao final da fila com tempo atualizado.
-// → Retorne 1 se o processo terminou, 0 caso contrário.
-
-// Ordenação de fila usando apenas operações de fila
-// Implemente void ordenarFilaCrescente(Fila* f) que ordena a fila em ordem crescente usando exclusivamente inserir() e remover().
-// → Proibido: vetor, lista, pilha, recursão profunda, ou qualquer estrutura externa.
-// → Dica: use múltiplas passagens e seleção do menor.
-
-// Detecção de padrão cíclico
-// Escreva int temPadraoRepetido(Fila* f) que verifica se a fila é composta por repetições de um mesmo bloco.
-// → Ex: [1,2,1,2] → sim (bloco [1,2])
-// → Ex: [1,2,3,1,2] → não
-// → Restaurar a fila após a verificação.
-
-// Mistura perfeita (perfect shuffle)
-// Implemente void misturaPerfeita(Fila* f) que divide a fila ao meio e intercala as metades como em um baralho:
-// [1,2,3,4,5,6] → [1,4,2,5,3,6]
-// Se o tamanho for ímpar, a primeira metade tem um elemento a mais.
-// → Use no máximo uma fila auxiliar.
+int compararFilas(Fila* f1, Fila* f2){
+    if(!f1 || !f2) return 0;
+    Elemento *e1 = f1->inicio;
+    Elemento *e2 = f2->inicio;
+    while(e1 && e2){
+        if(e1->dado != e2->dado) return 0;
+        e1 = e1->prox;
+        e2 = e2->prox;
+    }
+    return (!e1 && !e2);
+}
 
 // LISTA 
-// Remoção de duplicatas com preservação de ordem
-// Implemente void removerDuplicatas(Lista* l) que remove todas as ocorrências repetidas, mantendo apenas a primeira aparição de cada valor.
-// → Não use vetor ou tabela hash; percorra com ponteiros.
+int contarOcorrencias(Lista* l, int valor){
+    if(!l || !l->inicio) return 0;
+    Elemento *e = l->inicio;
+    int cont=0;
+    while(e){
+        if(e->dado == valor) cont++;
+        e= e->prox;
+    } 
+    return cont;
+}
 
-// Inversão in-place de sublista
-// Escreva void inverterSublista(Lista* l, int inicio, int fim) que inverte apenas os elementos entre as posições inicio e fim (0-based).
-// → Ex: [1,2,3,4,5], inicio=1, fim=3 → [1,4,3,2,5]
-// Mesclagem de listas ordenadas sem repetição
-// Dadas duas listas ordenadas, crie Lista* mesclarSemRepeticao(Lista* l1, Lista* l2) que retorna uma nova lista ordenada com todos os elementos únicos.
+int todosPares(Lista* l){
+    if(!l || !l->inicio) return 0;
+    Elemento *e = l->inicio;
+    while(e){
+        if(e->dado %2 != 0) return 0; 
+        e= e->prox;
+    } 
+    return 1;
+}
 
+void inverterLista(Lista* l){
+    if(!l || !l->inicio) return;
+    Elemento *ant = NULL;
+    Elemento *atual = l->inicio;
+    Elemento *prox;
+    while(atual){
+        prox = atual->prox;
+        atual->prox = ant;
+        ant = atual;
+        atual = prox;
+    }
+    l->inicio = ant;
+}
 
-// Conversão binária com verificação de potência de 2
-// Escreva int ehPotenciaDeDois(int n) usando apenas a função decimalParaBinario e análise da lista resultante (deve ter exatamente um 1).
+void trocarPares(Lista* l){
+    if(!l || !l->inicio) return;
+    Elemento aux;
+    aux.prox = l->inicio;
+    Elemento *ant = &aux;
+    while (ant->prox && ant->prox->prox){
+        Elemento *n1 = ant->prox;
+        Elemento *n2 = ant->prox->prox;
+        n1->prox = n2->prox;
+        n2->prox = n1;
+        ant->prox = n2;
+        ant = n1;
+    }
+    l->inicio = aux.prox;
+}
 
-// Divisão em listas pares e ímpares
-// Implemente void separarParesImpares(Lista* original, Lista* pares, Lista* impares) que esvazia original e distribui seus elementos em pares e impares, mantendo a ordem.
+void moverParesParaFrente(Lista* l){
+    if(!l || !l->inicio) return;
+    Elemento *iniPar, *iniImpar, *fimPar, *fimImpar;
+    Elemento *atual = l->inicio;
+    while (atual){
+        Elemento *next = atual->prox;
+        atual->prox = NULL;
+        if(atual->dado%2==0){
+            if(!fimPar){
+                iniPar = atual;
+                fimPar = atual;
+            } else {
+                fimPar->prox = atual;
+                fimPar = atual; 
+            }
+        } else {
+            if(!fimImpar){
+                iniImpar = atual;
+                fimImpar = atual;
+            } else{
+                fimImpar->prox = atual;
+                fimImpar = atual;
+            }
+        }
+        atual = next;
+    }
+    if (fimPar) {
+        fimPar->prox = iniImpar;
+        l->inicio = iniPar;
+    } else {
+        l->inicio = iniImpar;
+    }
+}
 
+void removerDuplicatas(Lista* l){
+    if(!l || !l->inicio) return;
+    Elemento *e = l->inicio;
+    while(e){
+        Elemento *ant = e;
+        Elemento *atual = e->prox;
+        while(atual){
+            if(atual->dado == ant->dado){
+                ant->prox = atual->prox;
+                free(atual);
+                atual = ant->prox;
+            } else{
+                ant = atual;
+                atual = atual->prox;
+            }
+        }
+        e = e->prox;
+    }
+}
 
-// Detecção e remoção de ciclo (algoritmo de Floyd)
-// Suponha que uma lista possa conter um ciclo (último nó aponta para um anterior).
-// Escreva int detectarCiclo(Lista* l) usando dois ponteiros (lento e rápido).
-// Escreva void removerCiclo(Lista* l) que corrige a lista, tornando-a linear.
+Lista* mesclarSemRepeticao(Lista* l1, Lista* l2) {
+    Lista *l = criarLista();
+    Elemento *a = l1 ? l1->inicio: NULL;   
+    Elemento *b = l2 ? l2->inicio: NULL;
+    int d = 0;
+    int c = 1;
+    while(a || b){
+        int e;
+        if(!b || (a && a->dado <= b->dado)){
+            e = a->dado;
+            a = a->prox;
+        } else {
+            e = b->dado;
+            b = b->prox;
+        }
+        if(c || e!= d){
+            inserirLista(l, e);
+            d = e;
+            c = 0;
+        }
+    }  
+    return l;    
+}
 
-// Lista como número grande – soma de dois números
-// Considere que uma lista armazena um número inteiro com dígitos em ordem normal (ex: [1,2,3] = 123).
-// Implemente Lista* somarNumeros(Lista* a, Lista* b) que retorna uma nova lista com a soma.
-// → Trate vai-um (carry) e tamanhos diferentes.
+void separarParesImpares(Lista* original, Lista* pares, Lista* impares){
+    while(original->inicio){
+        int x = removerListaRet(original);
+        if(x%2==0){
+            inserirLista(pares, x);
+        } else{
+            inserirLista(impares, x);
+        } 
+    }
+}
 
-// Reorganização em zig-zag
-// Escreva void zigZag(Lista* l) que reorganiza a lista de modo que:
-// l[0] ≤ l[1] ≥ l[2] ≤ l[3] ≥ ...
-// → Ex: [4,3,7,8,6,2,1] → [3,7,4,8,2,6,1]
-// → In-place, sem alocação extra.
+Lista* somarNumeros(Lista* a, Lista* b){
+    Elemento* e1 = a ? a->inicio: NULL;
+    Elemento* e2 = b ? b->inicio: NULL;
+    Lista *l = criarLista();
+    while(e1 && e2){
+        inserirLista(l, e1->dado+e2->dado);
+        e1= e1->prox;
+        e2= e2->prox;
+    }
+    if(e1){
+        inserirLista(l, e1->dado);
+        e1= e1->prox;
+    } else{
+        inserirLista(l, e2->dado);
+        e2= e2->prox;
+    }
+    return l;
+}
+
+void removerImpares(Lista* l){
+    if(!l || !l->inicio) return;
+    while(l->inicio && l->inicio->dado%2 != 0){
+        Elemento *temp = l->inicio;
+        l->inicio = l->inicio->prox;
+        free(temp);
+    } 
+    Elemento *e = l->inicio;
+    while (e && e->prox){
+        if (e->prox->dado %2 != 0){
+            Elemento *temp = e->prox;
+            e->prox = e->prox->prox;
+            free(temp);
+        } else{
+            e = e->prox;
+        }
+    }
+}
+
+Lista* filaParaListaInvertida(Fila* f){
+    Lista *l = criarLista();
+    if(!f || !f->inicio) return l;
+    Pilha *p = criarPilha();
+    Elemento *e = f->inicio;
+    while(e){
+        inserirPilha(p, e->dado);
+        e = e->prox;
+    }
+    while(p->topo){
+        inserirLista(l, removerPilha(p));
+    }
+    destruirPilha(p);
+    return l;
+}
+
+void removerPares(Lista* l){
+    if(!l || !l->inicio) return;
+    while(l->inicio && l->inicio->dado%2==0){
+        Elemento *temp = l->inicio;
+        l->inicio = l->inicio->prox;
+        free(temp);
+    } 
+    Elemento *e = l->inicio;
+    while (e && e->prox){
+        if(e->prox->dado%2==0){
+            Elemento *temp = e->prox;
+            e->prox = e->prox->prox;
+            free(temp);
+        } else{
+            e = e->prox;
+        }
+    }
+}
+
+void removerMaioresQue(Lista* l, int limite){
+    if(!l || !l->inicio) return;
+    while(l->inicio && l->inicio->dado > limite){
+        Elemento *temp = l->inicio;
+        l->inicio = l->inicio->prox;
+        free(temp);
+    }
+    Elemento *e = l->inicio;
+    while (e && e->prox){
+        if(e->prox->dado > limite){
+            Elemento *temp = e->prox;
+            e->prox = e->prox->prox;
+            free(temp);
+        } else{
+            e = e->prox;
+        }
+    }
+}
+
+void removerMultiplosDe(Lista* l, int k){
+    if(!l || !l->inicio || k==0) return;
+    while(l->inicio && l->inicio->dado%k==0){
+        Elemento *temp = l->inicio;
+        l->inicio = l->inicio->prox;
+        free(temp);
+    }
+    Elemento *e = l->inicio;
+    while(e && e->prox){
+        if(e->prox->dado %k == 0){
+            Elemento *temp = e->prox;
+            e->prox = e->prox->prox;
+            free(temp);
+        } else{
+            e = e->prox;
+        }
+    }
+}
+
+void removerRepetidosConsecutivos(Lista* l){
+    if(!l || !l->inicio) return;
+    Elemento *e = l->inicio;
+    while(e && e->prox){
+        if(e->prox->dado == e->dado){
+            Elemento *temp = e->prox;
+            e->prox = e->prox->prox;
+            free(temp);
+        } else{
+            e = e->prox;
+        }
+    }
+}
+
+void manterUnicos(Lista* l){
+    if(!l || !l->inicio) return;
+    Elemento *e = l->inicio;
+    while(e){
+        int cont = 0;
+        int valor = e->dado;
+        Elemento *aux = l->inicio;
+        while(aux){
+            if (aux->dado == valor) cont++;
+            aux = aux->prox; 
+        }
+        if(cont>1){
+            while(l->inicio && l->inicio->dado == valor){
+                Elemento *temp = l->inicio;
+                l->inicio = l->inicio->prox;
+                free(temp);
+            } 
+            Elemento *ant = l->inicio;
+            while(ant && ant->prox){
+                if(ant->prox->dado == valor){
+                    Elemento *temp = ant->prox;
+                    ant->prox = temp->prox;
+                    free(temp);
+                } else{
+                    ant= ant->prox;
+                }
+            }
+            e = l->inicio;
+        } else {
+            e = e->prox;
+        }
+    }
+}
+
+void removerNegativos(Lista* l){
+    if (!l || !l->inicio) return;
+    while (l->inicio && l->inicio->dado < 0){
+            Elemento *temp = l->inicio;
+            l->inicio = l->inicio->prox;
+            free(temp);
+    }
+    Elemento *e = l->inicio;
+    while(e && e->prox){
+        if(e->prox->dado < 0){
+            Elemento *temp = e->prox;
+            e->prox = temp->prox;
+            free(temp);
+        }   else {
+            e = e->prox;
+        }
+    }
+}
+
+void removerForaDoIntervalo(Lista* l, int min, int max){
+    if(!l || !l->inicio) return;
+    while (l->inicio && (l->inicio->dado < min || l->inicio->dado > max)){
+        Elemento *temp = l->inicio;
+        l->inicio = temp->prox;
+        free(temp);
+    }
+    Elemento *e = l->inicio;
+    while(e && e->prox){
+        if(e->prox->dado < min || e-> prox->dado > max){
+            Elemento *temp = e->prox;
+            e->prox = temp->prox;
+            free(temp);
+        } else{
+            e = e->prox;
+        }
+    }
+}
+
+void manterPrimeiroPar(Lista* l){
+    if(!l || !l->inicio) return;
+    Elemento *e = l->inicio;
+    while(e && e->dado %2!=0) e = e->prox;
+    while(e && e->prox){
+        if(e->prox->dado %2==0){
+            Elemento *temp = e->prox;
+            e->prox = temp->prox;
+            free(temp);
+        } else{
+            e = e->prox;
+        }
+    }
+}
+
+void limparRepetidas(Lista *l){
+    if(!l || !l->inicio) return;
+    Elemento *e = l->inicio;
+    while(e){
+        int valor = e->dado;
+        Elemento *aux = e;
+        while(aux->prox){
+            if(aux->prox->dado == valor){
+                Elemento *temp = aux->prox;
+                aux->prox = temp->prox;
+                free(temp);
+            } else{
+                aux = aux->prox;
+            }
+        }
+        e = e->prox;
+    }
+}
+
+int verificarEspelhoLista(Lista* l){
+    if(!l || !l->inicio) return 1;
+    Elemento *e = l->inicio;
+    Pilha *p = criarPilha();
+    while(e){
+        inserirPilha(p, e->dado);
+        e = e->prox;
+    }
+    e = l->inicio;
+    while(e){
+        if(e->dado == removerPilha(p)){
+            e= e->prox;
+        } else{
+            return 0;
+        }
+    }
+    destruirPilha(p);
+    return 1;
+}
+
+void rotacionarListaK(Lista* l, int k){
+    if(!l || !l->inicio) return;
+    int n = tamanhoLista(l);
+    if (n <= 1) return;
+    k = k % n;
+    if (k == 0) return;
+    int cont = n-k-1;
+    Elemento *e = l->inicio;
+    for(int i=0; i<cont; i++){
+        e= e->prox;
+    }
+    Elemento *iniRot = e->prox;
+    Elemento *fimRot = iniRot;
+    while(fimRot->prox) fimRot = fimRot->prox;
+    fimRot->prox = l->inicio;
+    l->inicio = iniRot;
+    e->prox = NULL;
+}
+
+Lista* intercalarListasPreservando(Lista* l1, Lista* l2){
+    Lista *l = criarLista();
+    Elemento *a = l1 ? l1->inicio: NULL;   
+    Elemento *b = l2 ? l2->inicio: NULL;
+    while(a && b){
+        inserirLista(l, a->dado);
+        inserirLista(l, b->dado);
+        a = a->prox;
+        b = b->prox;
+    }
+    while(b) {
+        inserirLista(l, b->dado);
+        b = b->prox;
+    }
+    while(a) {
+        inserirLista(l, a->dado);
+        a = a->prox;
+    }
+    return l;
+}
 
 int main(){
-    Fila* f = criarFila();
-    inserirFila(f, 10);
-    inserirFila(f, 20);
-    inserirFila(f, 25);
-    inserirFila(f, 30);
-    inserirFila(f, 35);
-    inserirFila(f, 40);
+    Lista* l = criarLista();
+    inserirLista(l, 10);
+    inserirLista(l, 35);
+    inserirLista(l, 25);
+    inserirLista(l, 30);
+    inserirLista(l, 30);
+    inserirLista(l, 40);
 
-    Fila* g = criarFila();
-    inserirFila(g, 'A');
-    inserirFila(g, 'Z');
-    inserirFila(g, 'H');
+    Lista* g = criarLista();
+    inserirLista(g, 'A');
+    inserirLista(g, 'Z');
+    inserirLista(g, 'H');
 
-    imprimirFila(f);
-    inverterFila(f);
-    imprimirFila(f);
-    printf("%d\n", maiorFila(f)); 
+    imprimirLista(l);
+    manterUnicos(l);
+    printf("\n"); 
+    imprimirLista(l);
 
-    destruirFila(f); 
+    destruirLista(l); 
     return 0;
 }
 

@@ -106,7 +106,6 @@ Lista* intersecao(Lista* l1, Lista* l2) {
     return l3;
 }
 
-
 // 8. Remover Repetidos
 void removerRepetidos(Lista* l) {
     if (!l || !l->inicio) return;
@@ -128,3 +127,18 @@ void removerRepetidos(Lista* l) {
     }
 }
 
+void trocarPares(Lista* l) {
+    if (!l || !l->inicio) return;
+    Elemento aux;
+    aux.prox = l->inicio;
+    Elemento * ant = &aux;
+    while(ant->prox && ant->prox->prox){
+        Elemento *n1 = ant->prox;
+        Elemento *n2 = ant->prox->prox;
+        n1->prox = n2->prox;
+        n2->prox = n1;
+        ant->prox = n2;
+        ant = n1;
+    }
+    l->inicio = aux.prox; 
+}
